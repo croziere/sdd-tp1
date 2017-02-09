@@ -10,12 +10,9 @@ typedef struct action
     char jour;
     char heure[2];
     char nom[10];
-    struct action * suiv;
-
 }action_t, *paction_t;
 
 paction_t initAction(void);
-int estVide(paction_t);
 
 void afficherActions(paction_t);
 void afficherAction(paction_t);

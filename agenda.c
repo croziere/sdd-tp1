@@ -7,8 +7,7 @@
 #include "agenda.h"
 
 
-
-int chargerAction(const char * path, pagenda_t * liste)
+int chargerAgenda(const char * path, list_t * list)
 {
     FILE * stream;
     char buf[25];
@@ -34,7 +33,7 @@ int chargerAction(const char * path, pagenda_t * liste)
         strncpy(heure, buf+7, 2);
         strcpy(nom, buf+9);
 
-        ajouterAction(liste, annee, semaine, jour, heure, nom);
+        ajouterAction(list, annee, semaine, jour, heure, nom);
     }
 
     if(ferror(stream))
@@ -93,7 +92,7 @@ void afficherAgenda(pagenda_t agenda)
         {
             afficherSemaine(semaineCurr);
             afficherActions(semaineCurr->actions);
-            semaineCurr = semaineCurr->suiv;
+          //  semaineCurr = semaineCurr->suiv;
         }
     }
 }
