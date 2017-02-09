@@ -27,7 +27,6 @@ int Charger (char* filename, list_t* pt){
     char jour;
     char heure[2];
     char nom[10];
-    list_t agenda;
     psemaine_t * cur;
     int retour;
 
@@ -52,7 +51,7 @@ int Charger (char* filename, list_t* pt){
         list_t pt_semaine = gestionnaireSemaine.Recherche(annee,semaine);
         if ( pt_semaine == null){
             semaine_t data = new(semaine_t,annee,semaine,&jour,heure,nom);
-            gestionnaireList.AjouterMaillon(agenda,&data);
+            gestionnaireList.AjouterMaillon(*pt,&data);
         }else{
             action_t data = new(action_t,&jour,heure,nom);
             gestionnaireList.AjouterMaillon(((psemaine_t)pt_semaine->data)->actions,&data);
