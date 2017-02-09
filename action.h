@@ -5,6 +5,8 @@
 #ifndef TP1_ACTION_H
 #define TP1_ACTION_H
 
+#include "list.h"
+
 typedef struct action
 {
     char jour;
@@ -12,12 +14,7 @@ typedef struct action
     char nom[10];
     struct action * suiv;
 
-}action_t, *paction_t;
+}action_t;
 
-paction_t initAction(void);
-int estVide(paction_t);
-
-void afficherActions(paction_t);
-void afficherAction(paction_t);
 
 #endif //TP1_ACTION_H
