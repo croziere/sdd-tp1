@@ -17,17 +17,21 @@ typedef struct agenda
     char semaine[2];
     action_t * actions;
     struct agenda * suiv;
-}agenda_t, *pagenda_t;
+}semaine_t, *psemaine_t;
 
+typedef struct GestionnaireSemaine{
+    psemaine_t (*Recherche)(char*,char*);
+    void (*AjouterAction)(char*,char*,char*);
+}GestionnaireSemaine;
 // Gestionnaire liste agenda
-pagenda_t initAgenda(void);
+psemaine_t initAgenda(void);
 
-int estVideAgenda(pagenda_t);
+int estVideAgenda(psemaine_t);
 
-int chargerAction(const char *, pagenda_t *);
-void ajouterAction(pagenda_t *, const char *, const char *, const char, const char *, const char *);
+int chargerAction(const char *, psemaine_t *);
+void ajouterAction(psemaine_t *, const char *, const char *, const char, const char *, const char *);
 
-void afficherSemaine(pagenda_t);
-void afficherAgenda(pagenda_t);
+void afficherSemaine(psemaine_t);
+void afficherAgenda(psemaine_t);
 
 #endif //SDD_TP1_AGENDA_H
