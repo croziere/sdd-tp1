@@ -33,11 +33,17 @@ void liberer_list(list_t list, void (*free_data)(void *))
     }
 }
 
+/// Return 0 if the list is empty
+/// \param list
+/// \return
 int estVide(list_t list)
 {
     return (list == NULL);
 }
 
+/// Add a node in the list
+/// \param prev
+/// \param data
 void ajouterMaillon(maillon_t * prev, void * data)
 {
     maillon_t * wrap;
@@ -50,6 +56,9 @@ void ajouterMaillon(maillon_t * prev, void * data)
     prev->next = wrap;
 }
 
+/// Remove a node from the list
+/// \param prev
+/// \param free_data
 void supprimerMaillon(maillon_t * prev, void (*free_data)(void *))
 {
     maillon_t * temp;
@@ -59,5 +68,17 @@ void supprimerMaillon(maillon_t * prev, void (*free_data)(void *))
 
     free_data(temp->data);
     free(temp);
+}
+
+/// Display the list on stream
+/// \param list
+/// \param print_data
+/// \param stream
+void afficherList(list_t list, void (*print_data)(void *, FILE *), FILE * stream)
+{
+    foreach(list, cur)
+    {
+        print_data(cur->data, stream);
+    }
 }
 
