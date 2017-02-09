@@ -5,4 +5,4 @@ add_executable(
         agenda.c
         agenda.h
         main.c
-        action.c action.h)
+        action.c action.h list.c list.h helper.h)
