@@ -19,4 +19,6 @@ int estVide(list_t);
 void ajouterMaillon(maillon_t *, void *);
 void supprimerMaillon(maillon_t * prev, void (*)(void *));
 
+void afficherList(list_t, void (*)(void *, FILE *), FILE*);
+
 #endif //TP1_LIST_H

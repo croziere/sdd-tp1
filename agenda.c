@@ -7,8 +7,7 @@
 #include "agenda.h"
 
 
-
-int chargerAction(const char * path, pagenda_t * liste)
+int chargerAgenda(const char * path, list_t * list)
 {
     FILE * stream;
     char buf[25];
@@ -34,7 +33,7 @@ int chargerAction(const char * path, pagenda_t * liste)
         strncpy(heure, buf+7, 2);
         strcpy(nom, buf+9);
 
-        ajouterAction(liste, annee, semaine, jour, heure, nom);
+        //ajouterAction(list, annee, semaine, jour, heure, nom);
     }
 
     if(ferror(stream))
@@ -48,62 +47,19 @@ int chargerAction(const char * path, pagenda_t * liste)
 
 }
 
-void afficherActions(paction_t action)
+void afficherSemaine(pagenda_t agenda, FILE * stream)
 {
-    paction_t curr;
-
-    if(estVide(action))
-    {
-        fprintf(stdout, "Aucune action pour cette semaine.\n");
-    }
-    else
-    {
-        curr = action;
-        while (curr != NULL)
-        {
-            afficherAction(curr);
-            curr = curr->suiv;
-        }
-    }
+    fprintf(stream, "Annee %s / Semaine %s\n", agenda->annee, agenda->semaine);
 }
 
-void afficherAction(paction_t action)
+void afficherAgenda(pagenda_t pagenda, FILE * stream)
 {
-    fprintf(stdout, "\t%s\n", action->nom);
-    fprintf(stdout, "\tLe %c a %sh00\n", action->jour, action->heure);
+    afficherSemaine(pagenda, stream);
+    afficherList(pagenda->actions, &afficherAction, stream);
 }
 
-void afficherSemaine(pagenda_t agenda)
+void libererAgenda(pagenda_t pagenda)
 {
-    fprintf(stdout, "Annee %s / Semaine %s\n", agenda->annee, agenda->semaine);
-}
-
-void afficherAgenda(pagenda_t agenda)
-{
-    pagenda_t semaineCurr;
-
-    if(estVideAgenda(agenda))
-    {
-        fprintf(stdout, "Votre agenda est vide.\n");
-    }
-    else
-    {
-        semaineCurr = agenda;
-        while (semaineCurr != NULL)
-        {
-            afficherSemaine(semaineCurr);
-            afficherActions(semaineCurr->actions);
-            semaineCurr = semaineCurr->suiv;
-        }
-    }
-}
-
-int estVideAgenda(pagenda_t agenda)
-{
-    return (agenda == NULL);
-}
-
-pagenda_t initAgenda()
-{
-    return NULL;
+    liberer_list(pagenda->actions, &free);
+    free(pagenda);
 }

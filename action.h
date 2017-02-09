@@ -12,9 +12,8 @@ typedef struct action
     char jour;
     char heure[2];
     char nom[10];
-    struct action * suiv;
+}action_t, *paction_t;
 
-}action_t;
-
+void afficherAction(paction_t, FILE * stream);
 
 #endif //TP1_ACTION_H

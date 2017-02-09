@@ -4,13 +4,9 @@
 #include <stdio.h>
 #include "action.h"
 
-
-paction_t initAction()
+void afficherAction(paction_t action, FILE * stream)
 {
-    return NULL;
+    fprintf(stream, "\t%s\n", action->nom);
+    fprintf(stream, "\tLe %c a %sh00\n", action->jour, action->heure);
 }
 
-int estVide(paction_t action)
-{
-    return (action == NULL);
-}
