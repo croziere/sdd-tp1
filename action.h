@@ -5,6 +5,8 @@
 #ifndef TP1_ACTION_H
 #define TP1_ACTION_H
 
+#include "list.h"
+
 typedef struct action
 {
     char jour;
