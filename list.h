@@ -11,6 +11,10 @@ typedef struct maillon
     struct maillon * next;
 }maillon_t, *list_t;
 
+typedef struct GestionnaireList{
+    void (*AjouterMaillon)(maillon_t*,void*);
+}GestionnaireList;
+
 list_t init_list();
 void liberer_list(list_t, void (*)(void *));
 
