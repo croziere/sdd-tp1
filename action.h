@@ -12,9 +12,6 @@ typedef struct action
     char nom[10];
 }action_t, *paction_t;
 
-paction_t initAction(void);
-
-void afficherActions(paction_t);
-void afficherAction(paction_t);
+void afficherAction(paction_t, FILE * stream);
 
 #endif //TP1_ACTION_H

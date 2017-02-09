@@ -16,7 +16,7 @@ typedef struct
 {
     char annee[4];
     char semaine[2];
-    action_t * actions;
+    list_t actions;
 }agenda_t, *pagenda_t;
 
 // Gestionnaire liste agenda
@@ -27,7 +27,9 @@ int estVideAgenda(pagenda_t);
 int chargerAgenda(const char *, list_t *);
 void ajouterAction(pagenda_t *, const char *, const char *, const char, const char *, const char *);
 
-void afficherSemaine(pagenda_t);
-void afficherAgenda(pagenda_t);
+void afficherSemaine(pagenda_t, FILE *);
+void afficherAgenda(pagenda_t, FILE *);
+
+void libererAgenda(pagenda_t);
 
 #endif //SDD_TP1_AGENDA_H
