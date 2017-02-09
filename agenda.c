@@ -47,18 +47,18 @@ int chargerAgenda(const char * path, list_t * list)
 
 }
 
-void afficherSemaine(pagenda_t agenda, FILE * stream)
+void afficherSemaine(psemaine_t agenda, FILE * stream)
 {
     fprintf(stream, "Annee %s / Semaine %s\n", agenda->annee, agenda->semaine);
 }
 
-void afficherAgenda(pagenda_t pagenda, FILE * stream)
+void afficherAgenda(psemaine_t pagenda, FILE * stream)
 {
     afficherSemaine(pagenda, stream);
     afficherList(pagenda->actions, &afficherAction, stream);
 }
 
-void libererAgenda(pagenda_t pagenda)
+void libererAgenda(psemaine_t pagenda)
 {
     liberer_list(pagenda->actions, &free);
     free(pagenda);
