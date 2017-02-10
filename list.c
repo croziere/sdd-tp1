@@ -9,6 +9,17 @@
 #include "list.h"
 #include "helper.h"
 
+GestionnaireList GestionnaireList_new(){
+    GestionnaireList* pt;
+    malcx(pt, sizeof(GestionnaireList),"Erreur allocation liste")
+    pt->AfficherList = &afficherList;
+    pt->AjouterMaillon =&ajouterMaillon;
+    pt->EstVide = &estVide;
+    pt->LibererList = &liberer_list;
+    pt->SupprimerMaillon = &supprimerMaillon;
+    return *pt;
+}
+
 list_t init_list()
 {
     return NULL;

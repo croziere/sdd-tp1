@@ -48,7 +48,7 @@ int Charger (char* filename, list_t* pt){
         strncpy(heure, buf+7, 2);
         strcpy(nom, buf+9);
 
-        list_t pt_semaine = gestionnaireSemaine.Recherche(annee,semaine);
+        list_t pt_semaine = gestionnaireSemaine.Recherche(pt,annee,semaine);
         if ( pt_semaine == null){
             semaine_t data = new(semaine_t,annee,semaine,&jour,heure,nom);
             gestionnaireList.AjouterMaillon(*pt,&data);
