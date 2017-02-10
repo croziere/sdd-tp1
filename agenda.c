@@ -14,6 +14,8 @@ list_t Rechercher (list_t pt, char* annee, char * semaine){
     psemaine_t pdata;
     int test_annee;
     int test_semaine;
+    if (pt->data == null)
+        cur = null;
     while (cur != null){
         pdata = (psemaine_t)(cur->data);
         test_annee = strcmp(pdata->annee, annee);
@@ -36,9 +38,10 @@ semaine_t semaine_t_new(char* annee, char* semaine, char* jour, char* heure, cha
     psemaine_t pt;
     paction_t data = new(action_t,&jour,heure,nom);
     malcx(pt, sizeof(semaine_t),"Erreur lors de l'allocation d'une semaine")
+    ajouterMaillon(pt->actions,data);
     strcpy(pt->annee,annee);
     strcpy(pt->semaine,semaine);
-    pt->actions->data = &data;
+    pt->actions->data = data;
     pt->actions->next = null;
     return *pt;
 }

@@ -40,6 +40,7 @@ int Charger (char* filename, list_t* pt){
 
     while (!feof(stream))
     {
+        fgets(buf,25,stream);
         buf[strlen(buf) - 1] = '\0';
 
         strncpy(annee, buf, 4);
