@@ -8,8 +8,8 @@
 typedef struct action
 {
     char jour;
-    char heure[2];
-    char nom[10];
+    char heure[3];
+    char nom[11];
 }action_t, *paction_t;
 
 

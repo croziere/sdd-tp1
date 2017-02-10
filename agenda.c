@@ -31,7 +31,7 @@ GestionnaireSemaine GestionnaireSemaine_new(){
     return *pt;
 }
 
-semaine_t semaine_t_new(char* annee, char* semaine, char* jour, char* heure, char* nom){
+psemaine_t semaine_t_new(char* annee, char* semaine, char* jour, char* heure, char* nom){
     psemaine_t pt;
     paction_t data = new(action_t,&jour,heure,nom);
     malcx(pt, sizeof(semaine_t),"Erreur lors de l'allocation d'une semaine")
@@ -39,7 +39,7 @@ semaine_t semaine_t_new(char* annee, char* semaine, char* jour, char* heure, cha
     ajouterMaillon(pt->actions,data);
     strcpy(pt->annee,annee);
     strcpy(pt->semaine,semaine);
-    return *pt;
+    return pt;
 }
 
 void afficherSemaine(psemaine_t agenda, FILE * stream)
