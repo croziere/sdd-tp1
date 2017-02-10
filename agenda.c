@@ -34,12 +34,13 @@ GestionnaireSemaine GestionnaireSemaine_new(){
 
 semaine_t semaine_t_new(char* annee, char* semaine, char* jour, char* heure, char* nom){
     psemaine_t pt;
-    action_t data = new(action_t,&jour,heure,nom);
+    paction_t data = new(action_t,&jour,heure,nom);
     malcx(pt, sizeof(semaine_t),"Erreur lors de l'allocation d'une semaine")
     strcpy(pt->annee,annee);
     strcpy(pt->semaine,semaine);
     pt->actions->data = &data;
     pt->actions->next = null;
+    return *pt;
 }
 
 void afficherSemaine(psemaine_t agenda, FILE * stream)

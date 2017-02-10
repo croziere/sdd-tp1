@@ -35,7 +35,7 @@ int Charger (char* filename, list_t* pt){
 
     if((stream = fopen(filename, "r")) == null)
     {
-        retour = CHARGER_ERREUR_OUVERTURE;
+        return CHARGER_ERREUR_OUVERTURE;
     }
 
     while (!feof(stream))
@@ -53,7 +53,7 @@ int Charger (char* filename, list_t* pt){
             semaine_t data = new(semaine_t,annee,semaine,&jour,heure,nom);
             gestionnaireList.AjouterMaillon(*pt,&data);
         }else{
-            action_t data = new(action_t,&jour,heure,nom);
+            paction_t data = new(action_t,&jour,heure,nom);
             gestionnaireList.AjouterMaillon(((psemaine_t)pt_semaine->data)->actions,&data);
         }
     }

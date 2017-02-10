@@ -15,9 +15,9 @@ typedef struct action
 
 typedef struct gestionnaireAction {
 
-};
+}GestionnaireAction;
 
-paction_t initAction(void);
+paction_t action_t_new(char, char *, char *);
 
 void afficherActions(paction_t);
 void afficherAction(paction_t, FILE * stream);

@@ -5,6 +5,8 @@
 #ifndef TP1_LIST_H
 #define TP1_LIST_H
 
+#include <stdio.h>
+
 typedef struct maillon
 {
     void           * data;

@@ -2,7 +2,6 @@
 // Created by Benjamin Rozière on 03/02/2017.
 //
 
-#include <printf.h>
 #include <string.h>
 #include <stdlib.h>
 #include <errno.h>
@@ -20,6 +19,7 @@ int main(int argc, char ** argv)
 
     if(argc > 1)
     {
+
         malcx(path, sizeof(char)*strlen(argv[1]), "Allocation argument impossible")
         strcpy(path, argv[1]);
         if(p->Charger(path, &agenda) != RETURN_SUCCESS)
@@ -28,13 +28,14 @@ int main(int argc, char ** argv)
             return -1;
         }
 
+        printf("Salut\n");
         do
         {
             fprintf(stdout, "Action : ");
             fscanf(stdin, "%d%*c", &choix);
             ctrl->Do(choix);
 
-        }while (choix != 0);
+        }while (choix != 999);
 
         p->Sauvegarder(path, agenda);
 
