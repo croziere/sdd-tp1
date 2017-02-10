@@ -49,14 +49,17 @@ int Charger (char* filename, list_t* pt){
         strncpy(heure, buf+7, 2);
         strcpy(nom, buf+9);
 
-        list_t pt_semaine = gestionnaireSemaine.Recherche(pt,annee,semaine);
+
+        list_t pt_semaine = gestionnaireSemaine.Recherche(*pt,annee,semaine);
         if ( pt_semaine == null){
             semaine_t data = new(semaine_t,annee,semaine,&jour,heure,nom);
             gestionnaireList.AjouterMaillon(*pt,&data);
         }else{
             paction_t data = new(action_t,&jour,heure,nom);
             gestionnaireList.AjouterMaillon(((psemaine_t)pt_semaine->data)->actions,&data);
+            list_t data2 = (list_t) ((psemaine_t )(pt_semaine->data))->actions;
         }
+
     }
 
     if(ferror(stream))
