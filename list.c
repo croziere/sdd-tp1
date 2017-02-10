@@ -20,9 +20,19 @@ GestionnaireList GestionnaireList_new(){
     return *pt;
 }
 
+list_t list_t_new()
+{
+    return init_list();
+}
+
 list_t init_list()
 {
-    return NULL;
+    maillon_t * tete;
+    malcx(tete, sizeof(maillon_t), "Impossible d'allouer la tête")
+
+    tete->data = tete->next = NULL;
+
+    return tete;
 }
 
 /// Free a generic list
@@ -49,7 +59,7 @@ void liberer_list(list_t list, void (*free_data)(void *))
 /// \return
 int estVide(list_t list)
 {
-    return (list == NULL);
+    return (list->next == NULL);
 }
 
 /// Add a node in the list
