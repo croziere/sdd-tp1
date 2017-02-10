@@ -8,6 +8,7 @@
 #include <errno.h>
 #include "helper.h"
 #include "parser.h"
+#include "controller.h"
 
 int main(int argc, char ** argv)
 {
@@ -15,6 +16,7 @@ int main(int argc, char ** argv)
     int choix;
     parser * p = new(parser);
     list_t agenda = init_list();
+    Controller ctrl = new(Controller);
 
     if(argc > 1)
     {
@@ -30,6 +32,7 @@ int main(int argc, char ** argv)
         {
             fprintf(stdout, "Action : ");
             fscanf(stdin, "%d%*c", &choix);
+            ctrl->Do(choix);
 
         }while (choix != 0);
 

@@ -41,3 +41,20 @@ semaine_t semaine_t_new(char* annee, char* semaine, char* jour, char* heure, cha
     pt->actions->data = &data;
     pt->actions->next = null;
 }
+
+void afficherSemaine(psemaine_t agenda, FILE * stream)
+{
+    fprintf(stream, "Annee %s / Semaine %s\n", agenda->annee, agenda->semaine);
+}
+
+void afficherAgenda(psemaine_t pagenda, FILE * stream)
+{
+    afficherSemaine(pagenda, stream);
+    afficherList(pagenda->actions, &afficherAction, stream);
+}
+
+void libererAgenda(psemaine_t pagenda)
+{
+    liberer_list(pagenda->actions, &free);
+    free(pagenda);
+}

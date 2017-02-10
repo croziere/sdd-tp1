@@ -18,7 +18,6 @@ typedef struct gestionnaireAction {
 };
 
 paction_t initAction(void);
-int estVide(paction_t);
 
 void afficherActions(paction_t);
 void afficherAction(paction_t, FILE * stream);
