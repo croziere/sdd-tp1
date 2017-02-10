@@ -74,6 +74,23 @@ int Charger (char* filename, list_t* pt){
     return retour;
 }
 
-void Sauvegarder (char* filename, list_t pt){
+int Sauvegarder (char* filename, list_t pt){
+
+    FILE * stream;
+
+    if((stream = fopen(filename, "w")) == NULL)
+    {
+        return  CHARGER_ERREUR_OUVERTURE;
+    }
+
+    afficherList(pt, &saveAgenda, stream);
+
+    if(ferror(stream)) {
+        return CHARGER_ERREUR_LECTURE;
+    }
+
+    fclose(stream);
+
+    return RETURN_SUCCESS;
 
 }

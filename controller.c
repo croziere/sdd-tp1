@@ -3,6 +3,8 @@
 //
 
 #include "controller.h"
+#include "list.h"
+#include "agenda.h"
 
 Controller Controller_new()
 {
@@ -11,12 +13,16 @@ Controller Controller_new()
     ctrl->Do = &controller_do;
 }
 
-void controller_do(int choix)
+void controller_do(int choix, list_t list)
 {
     switch (choix)
     {
         case 1:
             fprintf(stdout, "Choix 1\n");
+            break;
+
+        case 2:
+            afficherList(list, &afficherAgenda, stdout);
             break;
 
         default:

@@ -25,3 +25,8 @@ void afficherAction(paction_t action, FILE * stream)
     fprintf(stream, "\tLe %c a %sh00\n", action->jour, action->heure);
 }
 
+void saveAction(paction_t paction, FILE * stream)
+{
+    fprintf(stream, "%c%s%s", paction->jour, paction->heure, paction->nom);
+}
+

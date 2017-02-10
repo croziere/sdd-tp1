@@ -53,6 +53,16 @@ void afficherAgenda(psemaine_t pagenda, FILE * stream)
     afficherList(pagenda->actions, &afficherAction, stream);
 }
 
+void saveAgenda(psemaine_t psemaine, FILE * stream)
+{
+    foreach(psemaine->actions, action)
+    {
+        fprintf(stream, "%s%s", psemaine->annee, psemaine->semaine);
+        saveAction(action->data, stream);
+        fprintf(stream, "\n");
+    }
+}
+
 void libererAgenda(psemaine_t pagenda)
 {
     liberer_list(pagenda->actions, &free);
