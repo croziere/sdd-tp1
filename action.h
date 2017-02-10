@@ -22,4 +22,6 @@ paction_t initAction(void);
 void afficherActions(paction_t);
 void afficherAction(paction_t, FILE * stream);
 
+void saveAction(paction_t , FILE*);
+
 #endif //TP1_ACTION_H

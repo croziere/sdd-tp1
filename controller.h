@@ -9,14 +9,15 @@
 #include <stdlib.h>
 #include <errno.h>
 #include "helper.h"
+#include "list.h"
 
 typedef struct controller
 {
-    void (*Do)(int);
+    void (*Do)(int, list_t);
 }controller_t, *Controller;
 
 Controller Controller_new();
 
-void controller_do(int);
+void controller_do(int, list_t);
 
 #endif //TP1_CONTROLLER_H
