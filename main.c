@@ -8,13 +8,14 @@
 #include "helper.h"
 #include "parser.h"
 #include "controller.h"
+#include "agenda.h"
 
 int main(int argc, char ** argv)
 {
     int choix;
 
     parser * p = new(parser);
-    list_t agenda = init_list();
+    list_t agenda = new(list_t);
     Controller ctrl = new(Controller);
 
     if(argc > 1)
@@ -25,17 +26,19 @@ int main(int argc, char ** argv)
             return -1;
         }
 
-
         do
         {
+            ctrl->ShowMenu();
             fprintf(stdout, "Action : ");
             fflush(stdout);
             fscanf(stdin, "%d%*c", &choix);
             ctrl->Do(choix, agenda);
 
-        }while (choix != 999);
+        }while (choix != 0);
 
         p->Sauvegarder(argv[1], agenda);
+
+        liberer_list(agenda, &libererAgenda);
 
     }
     else

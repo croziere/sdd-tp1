@@ -27,7 +27,9 @@ psemaine_t semaine_t_new(char* annee, char* semaine, char jour, char* heure, cha
 GestionnaireSemaine GestionnaireSemaine_new();
 list_t Rechercher (list_t pt, char* annee, char * semaine);
 
-void afficherAgenda(psemaine_t, FILE *);
-void saveAgenda(psemaine_t, FILE *);
+void afficherAgenda(psemaine_t , FILE *);
+void saveAgenda(psemaine_t , FILE *);
+
+void libererAgenda(psemaine_t);
 
 #endif //SDD_TP1_AGENDA_H

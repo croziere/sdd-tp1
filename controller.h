@@ -14,10 +14,12 @@
 typedef struct controller
 {
     void (*Do)(int, list_t);
+    void (*ShowMenu)(void);
 }controller_t, *Controller;
 
 Controller Controller_new();
 
 void controller_do(int, list_t);
+void controller_show_menu(void);
 
 #endif //TP1_CONTROLLER_H

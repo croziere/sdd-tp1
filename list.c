@@ -43,7 +43,7 @@ void liberer_list(list_t list, void (*free_data)(void *))
     maillon_t * cur;
     maillon_t * temp;
 
-    cur = list;
+    cur = list->next;
 
     while (cur != NULL)
     {
@@ -52,6 +52,8 @@ void liberer_list(list_t list, void (*free_data)(void *))
         cur = cur->next;
         free(temp);
     }
+
+    free(list);
 }
 
 /// Return 0 if the list is empty
