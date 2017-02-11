@@ -5,7 +5,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <errno.h>
-#include <memory.h>
+#include <string.h>
 #include "list.h"
 #include "parser.h"
 #include "helper.h"
@@ -16,12 +16,14 @@ parser* parser_new (){
     malcx(pt, sizeof(parser),"Allocation du parser échouée")
     pt->Charger = &Charger;
     pt->Sauvegarder = &Sauvegarder;
+
+    return pt;
 }
 
 int Charger (char* filename, list_t* pt){
 
     FILE * stream;
-    char buf[25];
+    char buf[30];
     char annee[5];
     char semaine[3];
     char jour;
@@ -38,9 +40,9 @@ int Charger (char* filename, list_t* pt){
         return CHARGER_ERREUR_OUVERTURE;
     }
 
-    while (!feof(stream))
+    while (fgets(buf, 30, stream))
     {
-        fgets(buf,25,stream);
+        fflush(stream);
         buf[strlen(buf) - 1] = '\0';
 
         strncpy(annee, buf, 4);
@@ -48,20 +50,21 @@ int Charger (char* filename, list_t* pt){
         strncpy(&jour, buf+6, 1);
         strncpy(heure, buf+7, 2);
         strcpy(nom, buf+9);
-        annee[5] = '\0';
-        semaine[3] = '\0';
-        heure[3] = '\0';
 
+        annee[4] = '\0';
+        semaine[2] = '\0';
+        heure[2] = '\0';
 
-
-
-        list_t pt_semaine = gestionnaireSemaine.Recherche(*pt,annee,semaine);
-        if ( pt_semaine == null){
-            psemaine_t data = new(semaine_t,annee,semaine,&jour,heure,nom);
-            gestionnaireList.AjouterMaillon(*pt,data);
-        }else{
-            paction_t data = new(action_t,&jour,heure,nom);
-            gestionnaireList.AjouterMaillon(((psemaine_t)pt_semaine->data)->actions,&data);
+        list_t pt_semaine = gestionnaireSemaine.Recherche(*pt, annee, semaine);
+        if (pt_semaine == null)
+        {
+            psemaine_t data = new(semaine_t, annee, semaine, jour,heure,nom);
+            gestionnaireList.AjouterMaillon(*pt, data);
+        }
+        else
+        {
+            paction_t data = new(action_t, jour, heure, nom);
+            gestionnaireList.AjouterMaillon(((psemaine_t)pt_semaine->data)->actions, data);
             list_t data2 = (list_t) ((psemaine_t )(pt_semaine->data))->actions;
         }
 

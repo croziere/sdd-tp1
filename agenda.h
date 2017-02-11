@@ -23,7 +23,7 @@ typedef struct GestionnaireSemaine{
     list_t (*Recherche)(list_t,char*,char*);
 }GestionnaireSemaine;
 
-psemaine_t semaine_t_new(char* annee, char* semaine, char* jour, char* heure, char* nom);
+psemaine_t semaine_t_new(char* annee, char* semaine, char jour, char* heure, char* nom);
 GestionnaireSemaine GestionnaireSemaine_new();
 list_t Rechercher (list_t pt, char* annee, char * semaine);
 

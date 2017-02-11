@@ -31,9 +31,9 @@ GestionnaireSemaine GestionnaireSemaine_new(){
     return *pt;
 }
 
-psemaine_t semaine_t_new(char* annee, char* semaine, char* jour, char* heure, char* nom){
+psemaine_t semaine_t_new(char* annee, char* semaine, char jour, char* heure, char* nom){
     psemaine_t pt;
-    paction_t data = new(action_t,&jour,heure,nom);
+    paction_t data = new(action_t, jour,heure,nom);
     malcx(pt, sizeof(semaine_t),"Erreur lors de l'allocation d'une semaine")
     pt->actions = new(list_t);
     ajouterMaillon(pt->actions,data);

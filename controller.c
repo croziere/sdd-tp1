@@ -11,6 +11,8 @@ Controller Controller_new()
     Controller ctrl;
     malcx(ctrl, sizeof(controller_t), "Impossible d'allouer le controlleur");
     ctrl->Do = &controller_do;
+
+    return ctrl;
 }
 
 void controller_do(int choix, list_t list)

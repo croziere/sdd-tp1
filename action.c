@@ -2,7 +2,6 @@
 // Created by Benjamin Rozière on 03/02/2017.
 //
 #include <stdio.h>
-#include <malloc.h>
 #include <stdlib.h>
 #include <errno.h>
 #include <memory.h>

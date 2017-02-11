@@ -25,10 +25,11 @@ int main(int argc, char ** argv)
             return -1;
         }
 
-        printf("Salut\n");
+
         do
         {
             fprintf(stdout, "Action : ");
+            fflush(stdout);
             fscanf(stdin, "%d%*c", &choix);
             ctrl->Do(choix, agenda);
 
