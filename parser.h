@@ -7,7 +7,6 @@
 #define CHARGER_ERREUR_OUVERTURE -1
 #define CHARGER_ERREUR_LECTURE -2
 #define RETURN_SUCCESS 0
-#define null NULL
 #include "list.h"
 
 typedef struct parser {

@@ -19,9 +19,8 @@ typedef struct gestionnaireAction {
 
 paction_t action_t_new(char, char *, char *);
 
-void afficherActions(paction_t);
-void afficherAction(paction_t, FILE * stream);
+void afficherAction(void *, FILE * stream);
 
-void saveAction(paction_t , FILE*);
+void saveAction(void * , FILE*);
 
 #endif //TP1_ACTION_H

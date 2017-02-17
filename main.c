@@ -2,9 +2,6 @@
 // Created by Benjamin Rozière on 03/02/2017.
 //
 
-#include <string.h>
-#include <stdlib.h>
-#include <errno.h>
 #include "helper.h"
 #include "parser.h"
 #include "controller.h"

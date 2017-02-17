@@ -1,5 +1,7 @@
 project(TP1)
 
+set(CMAKE_C_FLAGS, '-Wall -Wextra -ansi -pedantic')
+
 add_executable(
         tp1
         agenda.c
