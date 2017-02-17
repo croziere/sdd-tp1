@@ -21,6 +21,7 @@ typedef struct GestionnaireList{
     void (*AfficherList)(list_t, void (*)(void *, FILE *), FILE*);
 }GestionnaireList;
 
+
 GestionnaireList GestionnaireList_new();
 list_t init_list();
 void liberer_list(list_t, void (*)(void *));

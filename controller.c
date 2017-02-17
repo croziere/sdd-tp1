@@ -6,6 +6,7 @@
 #include "list.h"
 #include "agenda.h"
 #include "parser.h"
+#include <string.h>
 
 Controller Controller_new()
 {
@@ -54,7 +55,7 @@ int ajouter_action(list_t list){
     char jour;
     char heure[3];
     char nom[11];
-
+    int len_nom;
     puts("Année: ");
     scanf("%s%*c",annee);
     puts("Semaine: ");
@@ -64,11 +65,16 @@ int ajouter_action(list_t list){
     puts("Heure: ");
     scanf("%s%*c",heure);
     puts("Nom: ");
-    scanf("%s%*c",nom);
+    fgets(nom,11,stdin);
+    fpurge(stdin);
     annee[4] = '\0';
     semaine[2] = '\0';
     heure[2] = '\0';
-    nom[10] = '\0';
+    len_nom = strlen(nom);
+    if (len_nom < 10){
+        nom[strlen(nom)-1] = '\0';
+    }
+
 
     list_t pt_semaine = gestionnaireSemaine.Recherche(list, annee, semaine);
     if (pt_semaine == null)
