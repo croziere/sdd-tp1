@@ -21,5 +21,6 @@ Controller Controller_new();
 
 void controller_do(int, list_t);
 void controller_show_menu(void);
+int ajouter_action(list_t list);
 
 #endif //TP1_CONTROLLER_H

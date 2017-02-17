@@ -36,7 +36,7 @@ int main(int argc, char ** argv)
 
         }while (choix != 0);
 
-        p->Sauvegarder(argv[1], agenda);
+        p->Sauvegarder("test_sauvegarde", agenda);
 
         liberer_list(agenda, &libererAgenda);
 
