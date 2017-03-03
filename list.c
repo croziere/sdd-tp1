@@ -10,7 +10,8 @@
 #include "helper.h"
 
 GestionnaireList GestionnaireList_new(){
-    GestionnaireList* pt;
+    GestionnaireList* pt = null;
+
     malcx(pt, sizeof(GestionnaireList),"Erreur allocation liste")
     pt->AfficherList = &afficherList;
     pt->AjouterMaillon =&ajouterMaillon;
@@ -27,12 +28,7 @@ list_t list_t_new()
 
 list_t init_list()
 {
-    maillon_t * tete;
-    malcx(tete, sizeof(maillon_t), "Impossible d'allouer la tête")
-
-    tete->data = tete->next = NULL;
-
-    return tete;
+    return null;
 }
 
 /// Free a generic list
@@ -61,22 +57,31 @@ void liberer_list(list_t list, void (*free_data)(void *))
 /// \return
 int estVide(list_t list)
 {
-    return (list->next == NULL);
+    return (list == NULL);
 }
 
 /// Add a node in the list
 /// \param prev
 /// \param data
-void ajouterMaillon(maillon_t * prev, void * data)
+void ajouterMaillon(maillon_t ** prev, void * data)
 {
-    maillon_t * wrap;
+    maillon_t * wrap = null;
 
     malcx(wrap, sizeof(maillon_t), "Impossible d'allouer le maillon")
 
     wrap->data = data;
-    wrap->next = prev->next;
 
-    prev->next = wrap;
+    if(*prev != null)
+    {
+        wrap->next = (*prev)->next;
+        (*prev)->next = wrap;
+    }
+    else
+    {
+        wrap->next = NULL;
+        *prev = wrap;
+    }
+
 }
 
 /// Remove a node from the list

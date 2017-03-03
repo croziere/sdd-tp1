@@ -35,7 +35,7 @@ psemaine_t semaine_t_new(char* annee, char* semaine, char jour, char* heure, cha
     paction_t data = new(action_t, jour,heure,nom);
     malcx(pt, sizeof(semaine_t),"Erreur lors de l'allocation d'une semaine")
     pt->actions = new(list_t);
-    ajouterMaillon(pt->actions,data);
+    ajouterMaillon(&pt->actions,data);
     strcpy(pt->annee,annee);
     strcpy(pt->semaine,semaine);
     return pt;

@@ -10,7 +10,7 @@
 
 #define malcx(ptr, size, error_msg) if((ptr = (__typeof__(ptr))malloc(size)) == NULL) { perror(error_msg);exit(errno); }
 
-#define foreach(array, current) __typeof__(array) current = array; while((current = current->next) != NULL)
+#define foreach(array, current) __typeof__(array) current; malcx(current, sizeof(__typeof__(*current)), "Alloc foreach impossible"); current->next = array; while((current = current->next) != NULL)
 
 #define new(type, ...) type ## _new(__VA_ARGS__)
 
