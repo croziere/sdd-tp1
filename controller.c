@@ -34,7 +34,7 @@ int controller_main(int argc, char **argv)
 
         parser_sauvegarder("test_sauvegarde", agenda);
 
-        liberer_list(agenda, &libererAgenda);
+        liberer_list(agenda, &agenda_liberer);
 
     }
     else
@@ -54,7 +54,7 @@ void controller_do(int choix, list_t list)
             break;
 
         case 2:
-            afficher_list(list, &afficherAgenda, stdout);
+            afficher_list(list, &agenda_afficher, stdout);
             break;
 
         case 3:
@@ -79,8 +79,6 @@ void controller_show_menu(void)
 }
 
 int controller_ajouter_action(list_t list){
-    GestionnaireSemaine gestionnaireSemaine = new(GestionnaireSemaine);
-
     char annee[5];
     char semaine[3];
     char jour;
@@ -107,10 +105,10 @@ int controller_ajouter_action(list_t list){
     }
 
 
-    list_t pt_semaine = gestionnaireSemaine.Recherche(list, annee, semaine);
+    list_t pt_semaine = agenda_rechercher(list, annee, semaine);
     if (pt_semaine == null)
     {
-        psemaine_t data = new(semaine_t, annee, semaine, jour,heure,nom);
+        psemaine_t data = agenda_semaine_creer(annee, semaine, jour, heure, nom);
         ajouter_maillon(&list, data);
     }
     else
@@ -121,7 +119,6 @@ int controller_ajouter_action(list_t list){
 }
 
 int controller_supprimer_action(list_t list){
-    GestionnaireSemaine gestionnaireSemaine = new(GestionnaireSemaine);
 
     GestionnaireAction gestionnaireAction = new(GestionnaireAction);
     char annee[5];
@@ -148,7 +145,7 @@ int controller_supprimer_action(list_t list){
     if (len_nom < 10){
         nom[strlen(nom)-1] = '\0';
     }
-    list_t pt_semaine = gestionnaireSemaine.RecherchePrec(list, annee, semaine);
+    list_t pt_semaine = agenda_rechercher_prec(list, annee, semaine);
 
     if (pt_semaine != null){
         list_t pt_action = gestionnaireAction.RecherhePrec(((psemaine_t)(pt_semaine->next->data))->actions, jour, heure, nom);

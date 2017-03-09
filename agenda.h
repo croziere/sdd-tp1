@@ -19,19 +19,14 @@ typedef struct
     list_t  actions;
 } semaine_t, * psemaine_t;
 
-typedef struct GestionnaireSemaine
-{
-    list_t (* Recherche)     (list_t, char *, char *);
-    list_t (* RecherchePrec) (list_t ,char *, char *);
-} GestionnaireSemaine;
 
-psemaine_t              semaine_t_new(char *, char *, char, char *, char *);
-GestionnaireSemaine     GestionnaireSemaine_new();
-list_t                  Rechercher (list_t, char *, char *);
-list_t                  RechercherPrec (list_t, char *, char *);
-void                    afficherAgenda(void *, FILE *);
-void                    saveAgenda(void *, FILE *);
+psemaine_t              agenda_semaine_creer(char *, char *, char, char *, char *);
+void                    agenda_liberer(void *);
 
-void                    libererAgenda(void *);
+list_t                  agenda_rechercher(list_t, char *, char *);
+list_t                  agenda_rechercher_prec(list_t, char *, char *);
+
+void                    agenda_afficher(void *, FILE *);
+void                    agenda_sauvegarder(void *, FILE *);
 
 #endif //SDD_TP1_AGENDA_H

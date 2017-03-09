@@ -8,7 +8,7 @@
 #include "agenda.h"
 #include "helper.h"
 
-list_t Rechercher (list_t pt, char* annee, char * semaine){
+list_t agenda_rechercher(list_t pt, char *annee, char *semaine){
     psemaine_t pdata;
     int test_annee;
     int test_semaine;
@@ -23,7 +23,7 @@ list_t Rechercher (list_t pt, char* annee, char * semaine){
     return null;
 }
 
-list_t RechercherPrec (list_t pt, char* annee, char * semaine){
+list_t agenda_rechercher_prec(list_t pt, char *annee, char *semaine){
     list_t cur = pt;
     psemaine_t pdata;
     int test_annee;
@@ -40,15 +40,8 @@ list_t RechercherPrec (list_t pt, char* annee, char * semaine){
     return null;
 }
 
-GestionnaireSemaine GestionnaireSemaine_new(){
-    GestionnaireSemaine* pt = null;
-    malcx(pt,sizeof(GestionnaireSemaine),"Erreur lors de l'allocation du gestionnaire de semaine")
-    pt->Recherche = &Rechercher;
-    pt->RecherchePrec = &RechercherPrec;
-    return *pt;
-}
 
-psemaine_t semaine_t_new(char* annee, char* semaine, char jour, char* heure, char* nom){
+psemaine_t agenda_semaine_creer(char *annee, char *semaine, char jour, char *heure, char *nom){
     psemaine_t pt = null;
     paction_t data = new(action_t, jour,heure,nom);
     malcx(pt, sizeof(semaine_t),"Erreur lors de l'allocation d'une semaine")
@@ -64,14 +57,14 @@ void afficherSemaine(psemaine_t agenda, FILE * stream)
     fprintf(stream, "Annee %s / Semaine %s\n", agenda->annee, agenda->semaine);
 }
 
-void afficherAgenda(void * data, FILE * stream)
+void agenda_afficher(void *data, FILE *stream)
 {
     psemaine_t pagenda = (psemaine_t)data;
     afficherSemaine(pagenda, stream);
     afficher_list(pagenda->actions, &afficherAction, stream);
 }
 
-void saveAgenda(void * data, FILE * stream)
+void agenda_sauvegarder(void *data, FILE *stream)
 {
     psemaine_t psemaine = (psemaine_t)data;
 
@@ -83,7 +76,7 @@ void saveAgenda(void * data, FILE * stream)
     }
 }
 
-void libererAgenda(void * data)
+void agenda_liberer(void *data)
 {
     psemaine_t pagenda = (psemaine_t)data;
 

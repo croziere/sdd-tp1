@@ -23,8 +23,6 @@ int parser_charger(char *filename, list_t *pt){
     psemaine_t * cur;
     int retour;
 
-    GestionnaireSemaine gestionnaireSemaine = new(GestionnaireSemaine);
-
     if((stream = fopen(filename, "r")) == null)
     {
         return CHARGER_ERREUR_OUVERTURE;
@@ -44,10 +42,10 @@ int parser_charger(char *filename, list_t *pt){
         semaine[2] = '\0';
         heure[2] = '\0';
 
-        list_t pt_semaine = gestionnaireSemaine.Recherche(*pt, annee, semaine);
+        list_t pt_semaine = agenda_rechercher(*pt, annee, semaine);
         if (pt_semaine == null)
         {
-            psemaine_t data = new(semaine_t, annee, semaine, jour,heure,nom);
+            psemaine_t data = agenda_semaine_creer(annee, semaine, jour, heure, nom);
             ajouter_maillon(pt, data);
         }
         else
@@ -79,7 +77,7 @@ int parser_sauvegarder(char *filename, list_t pt){
         return  CHARGER_ERREUR_OUVERTURE;
     }
 
-    afficher_list(pt, &saveAgenda, stream);
+    afficher_list(pt, &agenda_sauvegarder, stream);
 
     if(ferror(stream)) {
         return CHARGER_ERREUR_LECTURE;
