@@ -13,7 +13,7 @@ int controller_main(int argc, char **argv)
     int choix;
 
     parser * p = new(parser);
-    list_t agenda = new(list_t);
+    list_t agenda = init_list();
 
     if(argc > 1)
     {
@@ -55,7 +55,7 @@ void controller_do(int choix, list_t list)
             break;
 
         case 2:
-            afficherList(list, &afficherAgenda, stdout);
+            afficher_list(list, &afficherAgenda, stdout);
             break;
 
         case 3:
@@ -81,7 +81,7 @@ void controller_show_menu(void)
 
 int controller_ajouter_action(list_t list){
     GestionnaireSemaine gestionnaireSemaine = new(GestionnaireSemaine);
-    GestionnaireList gestionnaireList = new(GestionnaireList);
+
     char annee[5];
     char semaine[3];
     char jour;
@@ -112,18 +112,18 @@ int controller_ajouter_action(list_t list){
     if (pt_semaine == null)
     {
         psemaine_t data = new(semaine_t, annee, semaine, jour,heure,nom);
-        gestionnaireList.AjouterMaillon(&list, data);
+        ajouter_maillon(&list, data);
     }
     else
     {
         paction_t data = new(action_t, jour, heure, nom);
-        gestionnaireList.AjouterMaillon(&((psemaine_t)pt_semaine->data)->actions, data);
+        ajouter_maillon(&((psemaine_t) pt_semaine->data)->actions, data);
     }
 }
 
 int controller_supprimer_action(list_t list){
     GestionnaireSemaine gestionnaireSemaine = new(GestionnaireSemaine);
-    GestionnaireList gestionnaireList = new(GestionnaireList);
+
     GestionnaireAction gestionnaireAction = new(GestionnaireAction);
     char annee[5];
     char semaine[3];
@@ -154,10 +154,10 @@ int controller_supprimer_action(list_t list){
     if (pt_semaine != null){
         list_t pt_action = gestionnaireAction.RecherhePrec(((psemaine_t)(pt_semaine->next->data))->actions, jour, heure, nom);
         if (pt_action != null){
-            gestionnaireList.SupprimerMaillon(pt_action,&free);
+            supprimer_maillon(pt_action, &free);
             psemaine_t data = (psemaine_t) (pt_semaine->next->data);
             if (data->actions->next == null){
-                gestionnaireList.SupprimerMaillon(pt_semaine,&free);
+                supprimer_maillon(pt_semaine, &free);
             }
         }
     }

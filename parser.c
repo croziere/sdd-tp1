@@ -33,7 +33,6 @@ int Charger (char* filename, list_t* pt){
     int retour;
 
     GestionnaireSemaine gestionnaireSemaine = new(GestionnaireSemaine);
-    GestionnaireList gestionnaireList = new(GestionnaireList);
 
     if((stream = fopen(filename, "r")) == null)
     {
@@ -58,12 +57,12 @@ int Charger (char* filename, list_t* pt){
         if (pt_semaine == null)
         {
             psemaine_t data = new(semaine_t, annee, semaine, jour,heure,nom);
-            gestionnaireList.AjouterMaillon(pt, data);
+            ajouter_maillon(pt, data);
         }
         else
         {
             paction_t data = new(action_t, jour, heure, nom);
-            gestionnaireList.AjouterMaillon(&((psemaine_t)pt_semaine->data)->actions, data);
+            ajouter_maillon(&((psemaine_t) pt_semaine->data)->actions, data);
         }
 
     }
@@ -89,7 +88,7 @@ int Sauvegarder (char* filename, list_t pt){
         return  CHARGER_ERREUR_OUVERTURE;
     }
 
-    afficherList(pt, &saveAgenda, stream);
+    afficher_list(pt, &saveAgenda, stream);
 
     if(ferror(stream)) {
         return CHARGER_ERREUR_LECTURE;

@@ -13,28 +13,14 @@ typedef struct maillon
     struct maillon * next;
 } maillon_t, * list_t;
 
-typedef struct GestionnaireList
-{
-    void    (* AjouterMaillon)    (maillon_t **, void *);
-    void    (* LibererList)       (list_t,  void (*)(void *));
-    int     (* EstVide)           (list_t);
-    void    (* SupprimerMaillon)  (maillon_t * prev, void (*)(void *));
-    void    (* AfficherList)      (list_t, void (*)(void *, FILE *), FILE *);
-} GestionnaireList;
-
-
-GestionnaireList GestionnaireList_new();
-
 list_t  init_list();
-list_t  list_t_new();
-
-int     estVide(list_t);
-
-void    ajouterMaillon(maillon_t **, void *);
-void    supprimerMaillon(maillon_t * prev, void (*)(void *));
-
-void    afficherList(list_t, void (*)(void *, FILE *), FILE*);
-
 void    liberer_list(list_t, void (*)(void *));
+
+int     est_vide(list_t);
+
+void    ajouter_maillon(maillon_t **, void *);
+void    supprimer_maillon(maillon_t *, void (*)(void *));
+
+void    afficher_list(list_t, void (*)(void *, FILE *), FILE *);
 
 #endif //TP1_LIST_H
