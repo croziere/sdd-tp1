@@ -12,12 +12,11 @@ int controller_main(int argc, char **argv)
 {
     int choix;
 
-    parser * p = new(parser);
     list_t agenda = init_list();
 
     if(argc > 1)
     {
-        if(p->Charger(argv[1], &agenda) != RETURN_SUCCESS)
+        if(parser_charger(argv[1], &agenda) != RETURN_SUCCESS)
         {
             fputs("Impossible de lire le fichier", stderr);
             return -1;
@@ -33,7 +32,7 @@ int controller_main(int argc, char **argv)
 
         }while (choix != 0);
 
-        p->Sauvegarder("test_sauvegarde", agenda);
+        parser_sauvegarder("test_sauvegarde", agenda);
 
         liberer_list(agenda, &libererAgenda);
 

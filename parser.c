@@ -11,16 +11,7 @@
 #include "helper.h"
 #include "agenda.h"
 
-parser* parser_new (){
-    parser* pt;
-    malcx(pt, sizeof(parser),"Allocation du parser échouée")
-    pt->Charger = &Charger;
-    pt->Sauvegarder = &Sauvegarder;
-
-    return pt;
-}
-
-int Charger (char* filename, list_t* pt){
+int parser_charger(char *filename, list_t *pt){
 
     FILE * stream;
     char buf[30];
@@ -79,7 +70,7 @@ int Charger (char* filename, list_t* pt){
     return retour;
 }
 
-int Sauvegarder (char* filename, list_t pt){
+int parser_sauvegarder(char *filename, list_t pt){
 
     FILE * stream;
 
