@@ -18,7 +18,7 @@ int controller_main(int argc, char **argv)
         if(parser_charger(argv[1], &agenda) != RETURN_SUCCESS)
         {
             fputs("Impossible de lire le fichier", stderr);
-            return -1;
+            return EXIT_FAILURE;
         }
 
         do
@@ -77,35 +77,44 @@ void controller_show_menu(void)
     puts("\t[0] Quitte le programme (et sauvegarde)");
 }
 
-int controller_ajouter_action(list_t list){
+int controller_ajouter_action(list_t list)
+{
     char annee[5];
     char semaine[3];
     char jour;
     char heure[3];
     char nom[11];
     size_t len_nom;
+
     puts("Année: ");
     scanf("%s%*c",annee);
+
     puts("Semaine: ");
     scanf("%s%*c",semaine);
+
     puts("Jour: ");
     scanf("%c%*c",&jour);
+
     puts("Heure: ");
     scanf("%s%*c",heure);
+
     puts("Nom: ");
     fgets(nom,11,stdin);
+
     fpurge(stdin);
+
     annee[4] = '\0';
     semaine[2] = '\0';
     heure[2] = '\0';
+
     len_nom = strlen(nom);
+
     if (len_nom < 10){
         nom[strlen(nom)-1] = '\0';
     }
 
-
     list_t pt_semaine = agenda_rechercher(list, annee, semaine);
-    if (pt_semaine == null)
+    if (pt_semaine == NULL)
     {
         psemaine_t data = agenda_semaine_creer(annee, semaine, jour, heure, nom);
         list_ajouter_maillon(&list, data);
@@ -113,7 +122,7 @@ int controller_ajouter_action(list_t list){
     else
     {
         paction_t data = action_creer(jour, heure, nom);
-        list_ajouter_maillon(&((psemaine_t) pt_semaine->data)->actions, data);
+        list_ajouter_maillon(&((psemaine_t) list_data(pt_semaine))->actions, data);
     }
     return RETURN_SUCCESS;
 }
@@ -146,12 +155,12 @@ int controller_supprimer_action(list_t list){
     }
     list_t pt_semaine = agenda_rechercher_prec(list, annee, semaine);
 
-    if (pt_semaine != null){
-        list_t pt_action = action_rechercher_prec(((psemaine_t) (pt_semaine->next->data))->actions, jour, heure, nom);
-        if (pt_action != null){
+    if (pt_semaine != NULL){
+        list_t pt_action = action_rechercher_prec(((psemaine_t) list_data(list_suivant(pt_semaine)))->actions, jour, heure, nom);
+        if (pt_action != NULL){
             list_supprimer_maillon(pt_action, &free);
-            psemaine_t data = (psemaine_t) (pt_semaine->next->data);
-            if (data->actions->next == null){
+            psemaine_t data = (psemaine_t) list_data(list_suivant(pt_semaine));
+            if (list_suivant(data->actions) == NULL){
                 list_supprimer_maillon(pt_semaine, &free);
             }
         }

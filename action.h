@@ -7,6 +7,8 @@
 
 #include "list.h"
 
+#define JOUR_STRING_MAX 14
+
 typedef struct action
 {
     char jour;
@@ -15,11 +17,11 @@ typedef struct action
 } action_t, * paction_t;
 
 
-paction_t           action_creer(char, char *, char *);
+paction_t   action_creer(char, char *, char *);
 
-void                action_afficher_list(paction_t);
-void                action_afficher(void *, FILE *);
-list_t              action_rechercher_prec(list_t, char, char *, char *);
-void                action_sauvegarder(paction_t, FILE *);
+void        action_afficher(void *, FILE *);
+list_t      action_rechercher_prec(list_t, char, char *, char *);
+void        action_sauvegarder(paction_t, FILE *);
+char      * action_jour_char(paction_t, char *);
 
 #endif //TP1_ACTION_H

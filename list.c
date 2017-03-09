@@ -11,7 +11,7 @@
 
 list_t list_init()
 {
-    return null;
+    return NULL;
 }
 
 /// Free a generic list
@@ -22,13 +22,13 @@ void list_liberer(list_t list, void (*free_data)(void *))
     maillon_t * cur;
     maillon_t * temp;
 
-    cur = list->next;
+    cur = list_suivant(list);
 
     while (cur != NULL)
     {
         temp = cur;
-        free_data(temp->data);
-        cur = cur->next;
+        free_data(list_data(temp));
+        cur = list_suivant(cur);
         free(temp);
     }
 
@@ -38,7 +38,7 @@ void list_liberer(list_t list, void (*free_data)(void *))
 /// Return 0 if the list is empty
 /// \param list
 /// \return
-int estVide(list_t list)
+int list_est_vide(list_t list)
 {
     return (list == NULL);
 }
@@ -48,15 +48,15 @@ int estVide(list_t list)
 /// \param data
 void list_ajouter_maillon(maillon_t **prev, void *data)
 {
-    maillon_t * wrap = null;
+    maillon_t * wrap = NULL;
 
     malcx(wrap, sizeof(maillon_t), "Impossible d'allouer le maillon")
 
     wrap->data = data;
 
-    if(*prev != null)
+    if(*prev != NULL)
     {
-        wrap->next = (*prev)->next;
+        wrap->next = list_suivant(*prev);
         (*prev)->next = wrap;
     }
     else
@@ -74,10 +74,10 @@ void list_supprimer_maillon(maillon_t *prev, void (*free_data)(void *))
 {
     maillon_t * temp;
 
-    temp = prev->next;
-    prev->next = temp->next;
+    temp = list_suivant(prev);
+    prev->next = list_suivant(temp);
 
-    free_data(temp->data);
+    free_data(list_data(temp));
     free(temp);
 }
 
@@ -89,7 +89,19 @@ void list_afficher(list_t list, void (*print_data)(void *, FILE *), FILE *stream
 {
     foreach(list, cur)
     {
-        print_data(cur->data, stream);
+        print_data(list_data(cur), stream);
+
+        next(cur);
     }
+}
+
+void  * list_data(maillon_t * pmaillon)
+{
+    return pmaillon->data;
+}
+
+maillon_t * list_suivant(maillon_t * pmaillon)
+{
+    return pmaillon->next;
 }
 

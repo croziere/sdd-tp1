@@ -20,10 +20,9 @@ int parser_charger(char *filename, list_t *pt){
     char jour;
     char heure[3];
     char nom[11];
-    psemaine_t * cur;
     int retour;
 
-    if((stream = fopen(filename, "r")) == null)
+    if((stream = fopen(filename, "r")) == NULL)
     {
         return CHARGER_ERREUR_OUVERTURE;
     }
@@ -43,7 +42,7 @@ int parser_charger(char *filename, list_t *pt){
         heure[2] = '\0';
 
         list_t pt_semaine = agenda_rechercher(*pt, annee, semaine);
-        if (pt_semaine == null)
+        if (pt_semaine == NULL)
         {
             psemaine_t data = agenda_semaine_creer(annee, semaine, jour, heure, nom);
             list_ajouter_maillon(pt, data);
@@ -51,7 +50,7 @@ int parser_charger(char *filename, list_t *pt){
         else
         {
             paction_t data = action_creer(jour, heure, nom);
-            list_ajouter_maillon(&((psemaine_t) pt_semaine->data)->actions, data);
+            list_ajouter_maillon(&((psemaine_t) list_data(pt_semaine))->actions, data);
         }
 
     }
@@ -59,7 +58,9 @@ int parser_charger(char *filename, list_t *pt){
     if(ferror(stream))
     {
         retour = CHARGER_ERREUR_LECTURE;
-    }else{
+    }
+    else
+    {
         retour = RETURN_SUCCESS;
     }
 

@@ -19,14 +19,14 @@ typedef struct
     list_t  actions;
 } semaine_t, * psemaine_t;
 
+psemaine_t  agenda_semaine_creer(char *, char *, char, char *, char *);
+void        agenda_liberer(void *);
 
-psemaine_t              agenda_semaine_creer(char *, char *, char, char *, char *);
-void                    agenda_liberer(void *);
+list_t      agenda_rechercher(list_t, char *, char *);
+list_t      agenda_rechercher_prec(list_t, char *, char *);
 
-list_t                  agenda_rechercher(list_t, char *, char *);
-list_t                  agenda_rechercher_prec(list_t, char *, char *);
-
-void                    agenda_afficher(void *, FILE *);
-void                    agenda_sauvegarder(void *, FILE *);
+void        agenda_afficher(void *, FILE *);
+void        agenda_semaine_afficher(psemaine_t, FILE *);
+void        agenda_sauvegarder(void *, FILE *);
 
 #endif //SDD_TP1_AGENDA_H
