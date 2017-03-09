@@ -10,7 +10,7 @@
 
 Controller Controller_new()
 {
-    Controller ctrl;
+    Controller ctrl = null;
     malcx(ctrl, sizeof(controller_t), "Impossible d'allouer le controlleur");
     ctrl->Do = &controller_do;
     ctrl->ShowMenu = &controller_show_menu;
@@ -59,7 +59,7 @@ int ajouter_action(list_t list){
     char jour;
     char heure[3];
     char nom[11];
-    int len_nom;
+    size_t len_nom;
     puts("Année: ");
     scanf("%s%*c",annee);
     puts("Semaine: ");
@@ -102,7 +102,7 @@ int SupprimerAction(list_t list){
     char jour;
     char heure[3];
     char nom[11];
-    int len_nom;
+    size_t len_nom;
     puts("Année: ");
     scanf("%s%*c",annee);
     puts("Semaine: ");

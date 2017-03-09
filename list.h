@@ -11,29 +11,30 @@ typedef struct maillon
 {
     void           * data;
     struct maillon * next;
-}maillon_t, *list_t;
+} maillon_t, * list_t;
 
-typedef struct GestionnaireList{
-    void (*AjouterMaillon)(maillon_t**,void*);
-    void (*LibererList)(list_t, void (*)(void *));
-    int (*EstVide)(list_t);
-    void (*SupprimerMaillon)(maillon_t * prev, void (*)(void *));
-    void (*AfficherList)(list_t, void (*)(void *, FILE *), FILE*);
-}GestionnaireList;
+typedef struct GestionnaireList
+{
+    void    (* AjouterMaillon)    (maillon_t **, void *);
+    void    (* LibererList)       (list_t,  void (*)(void *));
+    int     (* EstVide)           (list_t);
+    void    (* SupprimerMaillon)  (maillon_t * prev, void (*)(void *));
+    void    (* AfficherList)      (list_t, void (*)(void *, FILE *), FILE *);
+} GestionnaireList;
 
 
 GestionnaireList GestionnaireList_new();
 
-list_t init_list();
-list_t list_t_new();
+list_t  init_list();
+list_t  list_t_new();
 
-int estVide(list_t);
+int     estVide(list_t);
 
-void ajouterMaillon(maillon_t **, void *);
-void supprimerMaillon(maillon_t * prev, void (*)(void *));
+void    ajouterMaillon(maillon_t **, void *);
+void    supprimerMaillon(maillon_t * prev, void (*)(void *));
 
-void afficherList(list_t, void (*)(void *, FILE *), FILE*);
+void    afficherList(list_t, void (*)(void *, FILE *), FILE*);
 
-void liberer_list(list_t, void (*)(void *));
+void    liberer_list(list_t, void (*)(void *));
 
 #endif //TP1_LIST_H

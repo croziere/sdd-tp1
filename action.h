@@ -12,19 +12,22 @@ typedef struct action
     char jour;
     char heure[3];
     char nom[11];
-}action_t, *paction_t;
+} action_t, * paction_t;
 
 
-typedef struct GestionnaireAction {
-    list_t (*RecherhePrec)(list_t,char,char*,char*);
-}GestionnaireAction;
+typedef struct GestionnaireAction
+{
 
-paction_t action_t_new(char, char *, char *);
+    list_t  (* RecherhePrec)    (list_t, char, char *, char *);
 
-GestionnaireAction GestionnaireAction_new();
-void afficherActions(paction_t);
-void afficherAction(paction_t, FILE * stream);
-list_t RecherhePrec (list_t pt, char jour, char* heure, char* nom);
-void saveAction(paction_t , FILE*);
+} GestionnaireAction;
+
+paction_t           action_t_new(char, char *, char *);
+
+GestionnaireAction  GestionnaireAction_new();
+void                afficherActions(paction_t);
+void                afficherAction(paction_t, FILE *);
+list_t              RecherhePrec (list_t, char, char *, char *);
+void                saveAction(paction_t, FILE *);
 
 #endif //TP1_ACTION_H

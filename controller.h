@@ -13,15 +13,15 @@
 
 typedef struct controller
 {
-    void (*Do)(int, list_t);
-    void (*ShowMenu)(void);
-}controller_t, *Controller;
+    void (* Do)          (int, list_t);
+    void (* ShowMenu)    (void);
+} controller_t, * Controller;
 
-Controller Controller_new();
+Controller  Controller_new();
 
-void controller_do(int, list_t);
-void controller_show_menu(void);
-int ajouter_action(list_t list);
-int SupprimerAction(list_t list);
+void        controller_do(int, list_t);
+void        controller_show_menu(void);
+int         ajouter_action(list_t);
+int         SupprimerAction(list_t);
 
 #endif //TP1_CONTROLLER_H
