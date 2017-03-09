@@ -9,9 +9,26 @@
 #include "list.h"
 #include "helper.h"
 
+GestionnaireList GestionnaireList_new(){
+    GestionnaireList* pt = null;
+
+    malcx(pt, sizeof(GestionnaireList),"Erreur allocation liste")
+    pt->AfficherList = &afficherList;
+    pt->AjouterMaillon =&ajouterMaillon;
+    pt->EstVide = &estVide;
+    pt->LibererList = &liberer_list;
+    pt->SupprimerMaillon = &supprimerMaillon;
+    return *pt;
+}
+
+list_t list_t_new()
+{
+    return init_list();
+}
+
 list_t init_list()
 {
-    return NULL;
+    return null;
 }
 
 /// Free a generic list
@@ -22,7 +39,7 @@ void liberer_list(list_t list, void (*free_data)(void *))
     maillon_t * cur;
     maillon_t * temp;
 
-    cur = list;
+    cur = list->next;
 
     while (cur != NULL)
     {
@@ -31,6 +48,8 @@ void liberer_list(list_t list, void (*free_data)(void *))
         cur = cur->next;
         free(temp);
     }
+
+    free(list);
 }
 
 /// Return 0 if the list is empty
@@ -44,16 +63,25 @@ int estVide(list_t list)
 /// Add a node in the list
 /// \param prev
 /// \param data
-void ajouterMaillon(maillon_t * prev, void * data)
+void ajouterMaillon(maillon_t ** prev, void * data)
 {
-    maillon_t * wrap;
+    maillon_t * wrap = null;
 
     malcx(wrap, sizeof(maillon_t), "Impossible d'allouer le maillon")
 
     wrap->data = data;
-    wrap->next = prev->next;
 
-    prev->next = wrap;
+    if(*prev != null)
+    {
+        wrap->next = (*prev)->next;
+        (*prev)->next = wrap;
+    }
+    else
+    {
+        wrap->next = NULL;
+        *prev = wrap;
+    }
+
 }
 
 /// Remove a node from the list

@@ -8,19 +8,19 @@
 typedef struct action
 {
     char jour;
-    char heure[2];
-    char nom[10];
+    char heure[3];
+    char nom[11];
 }action_t, *paction_t;
 
 
 typedef struct gestionnaireAction {
 
-};
+}GestionnaireAction;
 
-paction_t initAction(void);
-int estVide(paction_t);
+paction_t action_t_new(char, char *, char *);
 
-void afficherActions(paction_t);
-void afficherAction(paction_t, FILE * stream);
+void afficherAction(void *, FILE * stream);
+
+void saveAction(void * , FILE*);
 
 #endif //TP1_ACTION_H

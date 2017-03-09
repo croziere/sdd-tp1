@@ -2,25 +2,22 @@
 // Created by Benjamin Rozière on 03/02/2017.
 //
 
-#include <printf.h>
-#include <string.h>
-#include <stdlib.h>
-#include <errno.h>
 #include "helper.h"
 #include "parser.h"
+#include "controller.h"
+#include "agenda.h"
 
 int main(int argc, char ** argv)
 {
-    char * path, buf;
     int choix;
+
     parser * p = new(parser);
-    list_t agenda = init_list();
+    list_t agenda = new(list_t);
+    Controller ctrl = new(Controller);
 
     if(argc > 1)
     {
-        malcx(path, sizeof(char)*strlen(argv[1]), "Allocation argument impossible")
-        strcpy(path, argv[1]);
-        if(p->Charger(path, &agenda) != RETURN_SUCCESS)
+        if(p->Charger(argv[1], &agenda) != RETURN_SUCCESS)
         {
             fprintf(stderr, "Impossible de lire le fichier");
             return -1;
@@ -28,12 +25,17 @@ int main(int argc, char ** argv)
 
         do
         {
+            ctrl->ShowMenu();
             fprintf(stdout, "Action : ");
+            fflush(stdout);
             fscanf(stdin, "%d%*c", &choix);
+            ctrl->Do(choix, agenda);
 
         }while (choix != 0);
 
-        p->Sauvegarder(path, agenda);
+        p->Sauvegarder("test_sauvegarde", agenda);
+
+        liberer_list(agenda, &libererAgenda);
 
     }
     else

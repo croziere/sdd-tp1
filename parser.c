@@ -5,7 +5,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <errno.h>
-#include <memory.h>
+#include <string.h>
 #include "list.h"
 #include "parser.h"
 #include "helper.h"
@@ -16,17 +16,19 @@ parser* parser_new (){
     malcx(pt, sizeof(parser),"Allocation du parser échouée")
     pt->Charger = &Charger;
     pt->Sauvegarder = &Sauvegarder;
+
+    return pt;
 }
 
 int Charger (char* filename, list_t* pt){
 
     FILE * stream;
-    char buf[25];
-    char annee[4];
-    char semaine[2];
+    char buf[30];
+    char annee[5];
+    char semaine[3];
     char jour;
-    char heure[2];
-    char nom[10];
+    char heure[3];
+    char nom[11];
     psemaine_t * cur;
     int retour;
 
@@ -35,10 +37,10 @@ int Charger (char* filename, list_t* pt){
 
     if((stream = fopen(filename, "r")) == null)
     {
-        retour = CHARGER_ERREUR_OUVERTURE;
+        return CHARGER_ERREUR_OUVERTURE;
     }
 
-    while (!feof(stream))
+    while (fgets(buf, 30, stream))
     {
         buf[strlen(buf) - 1] = '\0';
 
@@ -48,14 +50,22 @@ int Charger (char* filename, list_t* pt){
         strncpy(heure, buf+7, 2);
         strcpy(nom, buf+9);
 
-        list_t pt_semaine = gestionnaireSemaine.Recherche(annee,semaine);
-        if ( pt_semaine == null){
-            semaine_t data = new(semaine_t,annee,semaine,&jour,heure,nom);
-            gestionnaireList.AjouterMaillon(*pt,&data);
-        }else{
-            action_t data = new(action_t,&jour,heure,nom);
-            gestionnaireList.AjouterMaillon(((psemaine_t)pt_semaine->data)->actions,&data);
+        annee[4] = '\0';
+        semaine[2] = '\0';
+        heure[2] = '\0';
+
+        list_t pt_semaine = gestionnaireSemaine.Recherche(*pt, annee, semaine);
+        if (pt_semaine == null)
+        {
+            psemaine_t data = new(semaine_t, annee, semaine, jour,heure,nom);
+            gestionnaireList.AjouterMaillon(pt, data);
         }
+        else
+        {
+            paction_t data = new(action_t, jour, heure, nom);
+            gestionnaireList.AjouterMaillon(&((psemaine_t)pt_semaine->data)->actions, data);
+        }
+
     }
 
     if(ferror(stream))
@@ -70,6 +80,23 @@ int Charger (char* filename, list_t* pt){
     return retour;
 }
 
-void Sauvegarder (char* filename, list_t pt){
+int Sauvegarder (char* filename, list_t pt){
+
+    FILE * stream;
+
+    if((stream = fopen(filename, "w")) == NULL)
+    {
+        return  CHARGER_ERREUR_OUVERTURE;
+    }
+
+    afficherList(pt, &saveAgenda, stream);
+
+    if(ferror(stream)) {
+        return CHARGER_ERREUR_LECTURE;
+    }
+
+    fclose(stream);
+
+    return RETURN_SUCCESS;
 
 }

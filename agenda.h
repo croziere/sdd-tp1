@@ -14,26 +14,22 @@
 
 typedef struct
 {
-    char annee[4];
-    char semaine[2];
+    char annee[5];
+    char semaine[3];
     list_t actions;
 }semaine_t, *psemaine_t;
 
 typedef struct GestionnaireSemaine{
-    psemaine_t (*Recherche)(char*,char*);
-    void (*AjouterAction)(char*,char*,char*);
+    list_t (*Recherche)(list_t,char*,char*);
 }GestionnaireSemaine;
-// Gestionnaire liste agenda
-psemaine_t initAgenda(void);
 
-int estVideAgenda(psemaine_t);
+psemaine_t semaine_t_new(char* annee, char* semaine, char jour, char* heure, char* nom);
+GestionnaireSemaine GestionnaireSemaine_new();
+list_t Rechercher (list_t pt, char* annee, char * semaine);
 
-int chargerAgenda(const char *, list_t *);
-void ajouterAction(psemaine_t *, const char *, const char *, const char, const char *, const char *);
+void afficherAgenda(void * , FILE *);
+void saveAgenda(void * , FILE *);
 
-void afficherSemaine(psemaine_t , FILE *);
-void afficherAgenda(psemaine_t , FILE *);
-
-void libererAgenda(psemaine_t);
+void libererAgenda(void *);
 
 #endif //SDD_TP1_AGENDA_H
