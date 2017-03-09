@@ -21,30 +21,26 @@
 #define malcx(ptr, size, error_msg) if((ptr = (__typeof__(ptr))malloc(size)) == NULL) { perror(error_msg);exit(errno); }
 
 /* -------------------------------------------------------------------- */
-/* agenda_rechercher           Recherche une semaine dans l'agenda      */
+/* foreach           Déclaration de boucle de parcours d'une liste      */
 /*                                                                      */
-/* En entrée: pt La liste des semaines (Agenda)                         */
-/*            annee Une chaine contenant l'année recherchée             */
-/*            semaine Une chaine contenant la semaine recherchée        */
-/*                                                                      */
-/* En sortie: Retourne l'adresse de la semaine ou NULL si non trouvé    */
+/* En entrée: array La liste à parcourir                                */
+/*            current L'identifiant de l'élement courant                */
+/* Exemple foreach(liste, cur)                                          */
+/*         {                                                            */
+/*              next(cur);                                              */
+/*         }                                                            */
 /* -------------------------------------------------------------------- */
 #define foreach(array, current) __typeof__(array) current = array; while(current != NULL)
 
 /* -------------------------------------------------------------------- */
-/* agenda_rechercher           Recherche une semaine dans l'agenda      */
+/* next           Utilisé avec foreach, permet l'avancée de la boucle   */
 /*                                                                      */
-/* En entrée: pt La liste des semaines (Agenda)                         */
-/*            annee Une chaine contenant l'année recherchée             */
-/*            semaine Une chaine contenant la semaine recherchée        */
-/*                                                                      */
-/* En sortie: Retourne l'adresse de la semaine ou NULL si non trouvé    */
+/* En entrée: cur Le pointeur sur l'élement courant de la liste         */
 /* -------------------------------------------------------------------- */
 #define next(cur) cur = list_suivant(cur)
 
 /* -------------------------------------------------------------------- */
 /* clrscr           Efface l'écran de la console (equiv. clear)         */
-/*                                                                      */
 /* -------------------------------------------------------------------- */
 #define clrscr printf("\033[H\033[2J")
 
