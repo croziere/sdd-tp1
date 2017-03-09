@@ -59,10 +59,10 @@ void controller_do(int choix, list_t list)
             break;
 
         case 3:
-            ajouter_action(list);
+            controller_ajouter_action(list);
 
         case 4:
-            SupprimerAction(list);
+            controller_supprimer_action(list);
 
         default:
             break;
@@ -79,7 +79,7 @@ void controller_show_menu(void)
     puts("\t[0] Quitte le programme (et sauvegarde)");
 }
 
-int ajouter_action(list_t list){
+int controller_ajouter_action(list_t list){
     GestionnaireSemaine gestionnaireSemaine = new(GestionnaireSemaine);
     GestionnaireList gestionnaireList = new(GestionnaireList);
     char annee[5];
@@ -121,7 +121,7 @@ int ajouter_action(list_t list){
     }
 }
 
-int SupprimerAction(list_t list){
+int controller_supprimer_action(list_t list){
     GestionnaireSemaine gestionnaireSemaine = new(GestionnaireSemaine);
     GestionnaireList gestionnaireList = new(GestionnaireList);
     GestionnaireAction gestionnaireAction = new(GestionnaireAction);

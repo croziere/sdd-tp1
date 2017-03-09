@@ -14,7 +14,7 @@
 int         controller_main(int, char **);
 void        controller_do(int, list_t);
 void        controller_show_menu(void);
-int         ajouter_action(list_t);
-int         SupprimerAction(list_t);
+int         controller_ajouter_action(list_t);
+int         controller_supprimer_action(list_t);
 
 #endif //TP1_CONTROLLER_H
