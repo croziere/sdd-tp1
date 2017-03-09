@@ -84,13 +84,12 @@ int ajouter_action(list_t list){
     if (pt_semaine == null)
     {
         psemaine_t data = new(semaine_t, annee, semaine, jour,heure,nom);
-        gestionnaireList.AjouterMaillon(list, data);
+        gestionnaireList.AjouterMaillon(&list, data);
     }
     else
     {
         paction_t data = new(action_t, jour, heure, nom);
-        gestionnaireList.AjouterMaillon(((psemaine_t)pt_semaine->data)->actions, data);
-        list_t data2 = (list_t) ((psemaine_t )(pt_semaine->data))->actions;
+        gestionnaireList.AjouterMaillon(&((psemaine_t)pt_semaine->data)->actions, data);
     }
 }
 

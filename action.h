@@ -20,6 +20,7 @@ typedef struct GestionnaireAction {
 }GestionnaireAction;
 
 paction_t action_t_new(char, char *, char *);
+
 GestionnaireAction GestionnaireAction_new();
 void afficherActions(paction_t);
 void afficherAction(paction_t, FILE * stream);

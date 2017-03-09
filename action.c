@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <errno.h>
-#include <memory.h>
+#include <string.h>
 #include "action.h"
 #include "helper.h"
 #include "parser.h"
@@ -12,7 +12,7 @@
 
 paction_t action_t_new(char jour, char * heure, char * nom)
 {
-    paction_t pt;
+    paction_t pt = null;
     malcx(pt,sizeof(action_t),"Erreur lors de l'allocation d'une action")
     pt->jour = jour;
     strcpy(pt->heure,heure);
