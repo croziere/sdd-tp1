@@ -3,19 +3,45 @@
 //
 
 #include "controller.h"
-#include "list.h"
 #include "agenda.h"
 #include "parser.h"
 #include <string.h>
 
-Controller Controller_new()
+int controller_main(int argc, char **argv)
 {
-    Controller ctrl;
-    malcx(ctrl, sizeof(controller_t), "Impossible d'allouer le controlleur");
-    ctrl->Do = &controller_do;
-    ctrl->ShowMenu = &controller_show_menu;
+    int choix;
 
-    return ctrl;
+    list_t agenda = init_list();
+
+    if(argc > 1)
+    {
+        if(parser_charger(argv[1], &agenda) != RETURN_SUCCESS)
+        {
+            fputs("Impossible de lire le fichier", stderr);
+            return -1;
+        }
+
+        do
+        {
+            controller_show_menu();
+            fprintf(stdout, "Action : ");
+            fflush(stdout);
+            fscanf(stdin, "%d%*c", &choix);
+            controller_do(choix, agenda);
+
+        }while (choix != 0);
+
+        parser_sauvegarder("test_sauvegarde", agenda);
+
+        liberer_list(agenda, &agenda_liberer);
+
+    }
+    else
+    {
+        fputs("Vous devez spécifier un fichier en argument", stderr);
+    }
+
+    return EXIT_SUCCESS;
 }
 
 void controller_do(int choix, list_t list)
@@ -27,14 +53,14 @@ void controller_do(int choix, list_t list)
             break;
 
         case 2:
-            afficherList(list, &afficherAgenda, stdout);
+            afficher_list(list, &agenda_afficher, stdout);
             break;
 
         case 3:
-            ajouter_action(list);
+            controller_ajouter_action(list);
 
         case 4:
-            SupprimerAction(list);
+            controller_supprimer_action(list);
 
         default:
             break;
@@ -51,15 +77,13 @@ void controller_show_menu(void)
     puts("\t[0] Quitte le programme (et sauvegarde)");
 }
 
-int ajouter_action(list_t list){
-    GestionnaireSemaine gestionnaireSemaine = new(GestionnaireSemaine);
-    GestionnaireList gestionnaireList = new(GestionnaireList);
+int controller_ajouter_action(list_t list){
     char annee[5];
     char semaine[3];
     char jour;
     char heure[3];
     char nom[11];
-    int len_nom;
+    size_t len_nom;
     puts("Année: ");
     scanf("%s%*c",annee);
     puts("Semaine: ");
@@ -80,29 +104,28 @@ int ajouter_action(list_t list){
     }
 
 
-    list_t pt_semaine = gestionnaireSemaine.Recherche(list, annee, semaine);
+    list_t pt_semaine = agenda_rechercher(list, annee, semaine);
     if (pt_semaine == null)
     {
-        psemaine_t data = new(semaine_t, annee, semaine, jour,heure,nom);
-        gestionnaireList.AjouterMaillon(&list, data);
+        psemaine_t data = agenda_semaine_creer(annee, semaine, jour, heure, nom);
+        ajouter_maillon(&list, data);
     }
     else
     {
-        paction_t data = new(action_t, jour, heure, nom);
-        gestionnaireList.AjouterMaillon(&((psemaine_t)pt_semaine->data)->actions, data);
+        paction_t data = action_creer(jour, heure, nom);
+        ajouter_maillon(&((psemaine_t) pt_semaine->data)->actions, data);
     }
+    return RETURN_SUCCESS;
 }
 
-int SupprimerAction(list_t list){
-    GestionnaireSemaine gestionnaireSemaine = new(GestionnaireSemaine);
-    GestionnaireList gestionnaireList = new(GestionnaireList);
-    GestionnaireAction gestionnaireAction = new(GestionnaireAction);
+int controller_supprimer_action(list_t list){
+
     char annee[5];
     char semaine[3];
     char jour;
     char heure[3];
     char nom[11];
-    int len_nom;
+    size_t len_nom;
     puts("Année: ");
     scanf("%s%*c",annee);
     puts("Semaine: ");
@@ -121,19 +144,17 @@ int SupprimerAction(list_t list){
     if (len_nom < 10){
         nom[strlen(nom)-1] = '\0';
     }
-    list_t pt_semaine = gestionnaireSemaine.RecherchePrec(list, annee, semaine);
+    list_t pt_semaine = agenda_rechercher_prec(list, annee, semaine);
 
     if (pt_semaine != null){
-        list_t pt_action = gestionnaireAction.RecherhePrec(((psemaine_t)(pt_semaine->next->data))->actions, jour, heure, nom);
+        list_t pt_action = action_rechercher_prec(((psemaine_t) (pt_semaine->next->data))->actions, jour, heure, nom);
         if (pt_action != null){
-            gestionnaireList.SupprimerMaillon(pt_action,&free);
+            supprimer_maillon(pt_action, &free);
             psemaine_t data = (psemaine_t) (pt_semaine->next->data);
             if (data->actions->next == null){
-                gestionnaireList.SupprimerMaillon(pt_semaine,&free);
+                supprimer_maillon(pt_semaine, &free);
             }
         }
     }
-
-
-
+    return RETURN_SUCCESS;
 }

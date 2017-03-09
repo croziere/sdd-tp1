@@ -9,23 +9,6 @@
 #include "list.h"
 #include "helper.h"
 
-GestionnaireList GestionnaireList_new(){
-    GestionnaireList* pt = null;
-
-    malcx(pt, sizeof(GestionnaireList),"Erreur allocation liste")
-    pt->AfficherList = &afficherList;
-    pt->AjouterMaillon =&ajouterMaillon;
-    pt->EstVide = &estVide;
-    pt->LibererList = &liberer_list;
-    pt->SupprimerMaillon = &supprimerMaillon;
-    return *pt;
-}
-
-list_t list_t_new()
-{
-    return init_list();
-}
-
 list_t init_list()
 {
     return null;
@@ -63,7 +46,7 @@ int estVide(list_t list)
 /// Add a node in the list
 /// \param prev
 /// \param data
-void ajouterMaillon(maillon_t ** prev, void * data)
+void ajouter_maillon(maillon_t **prev, void *data)
 {
     maillon_t * wrap = null;
 
@@ -87,7 +70,7 @@ void ajouterMaillon(maillon_t ** prev, void * data)
 /// Remove a node from the list
 /// \param prev
 /// \param free_data
-void supprimerMaillon(maillon_t * prev, void (*free_data)(void *))
+void supprimer_maillon(maillon_t *prev, void (*free_data)(void *))
 {
     maillon_t * temp;
 
@@ -102,7 +85,7 @@ void supprimerMaillon(maillon_t * prev, void (*free_data)(void *))
 /// \param list
 /// \param print_data
 /// \param stream
-void afficherList(list_t list, void (*print_data)(void *, FILE *), FILE * stream)
+void afficher_list(list_t list, void (*print_data)(void *, FILE *), FILE *stream)
 {
     foreach(list, cur)
     {
