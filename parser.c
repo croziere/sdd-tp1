@@ -50,7 +50,7 @@ int parser_charger(char *filename, list_t *pt){
         }
         else
         {
-            paction_t data = new(action_t, jour, heure, nom);
+            paction_t data = action_creer(jour, heure, nom);
             ajouter_maillon(&((psemaine_t) pt_semaine->data)->actions, data);
         }
 

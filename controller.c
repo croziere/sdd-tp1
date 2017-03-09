@@ -3,7 +3,6 @@
 //
 
 #include "controller.h"
-#include "list.h"
 #include "agenda.h"
 #include "parser.h"
 #include <string.h>
@@ -113,14 +112,14 @@ int controller_ajouter_action(list_t list){
     }
     else
     {
-        paction_t data = new(action_t, jour, heure, nom);
+        paction_t data = action_creer(jour, heure, nom);
         ajouter_maillon(&((psemaine_t) pt_semaine->data)->actions, data);
     }
+    return RETURN_SUCCESS;
 }
 
 int controller_supprimer_action(list_t list){
 
-    GestionnaireAction gestionnaireAction = new(GestionnaireAction);
     char annee[5];
     char semaine[3];
     char jour;
@@ -148,7 +147,7 @@ int controller_supprimer_action(list_t list){
     list_t pt_semaine = agenda_rechercher_prec(list, annee, semaine);
 
     if (pt_semaine != null){
-        list_t pt_action = gestionnaireAction.RecherhePrec(((psemaine_t)(pt_semaine->next->data))->actions, jour, heure, nom);
+        list_t pt_action = action_rechercher_prec(((psemaine_t) (pt_semaine->next->data))->actions, jour, heure, nom);
         if (pt_action != null){
             supprimer_maillon(pt_action, &free);
             psemaine_t data = (psemaine_t) (pt_semaine->next->data);
@@ -157,4 +156,5 @@ int controller_supprimer_action(list_t list){
             }
         }
     }
+    return RETURN_SUCCESS;
 }

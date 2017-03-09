@@ -10,7 +10,7 @@
 #include "parser.h"
 #include "agenda.h"
 
-paction_t action_t_new(char jour, char * heure, char * nom)
+paction_t action_creer(char jour, char *heure, char *nom)
 {
     paction_t pt = null;
     malcx(pt,sizeof(action_t),"Erreur lors de l'allocation d'une action")
@@ -20,26 +20,20 @@ paction_t action_t_new(char jour, char * heure, char * nom)
     return pt;
 }
 
-GestionnaireAction GestionnaireAction_new(){
-    GestionnaireAction* pt;
-    malcx(pt,sizeof(GestionnaireAction),"Erreur lors de l'allocation du gestionnaire de semaine")
-
-    pt->RecherhePrec = &RecherhePrec;
-    return *pt;
-}
-
-void afficherAction(paction_t action, FILE * stream)
+void action_afficher(void * data, FILE *stream)
 {
+    paction_t action = (paction_t)data;
+
     fprintf(stream, "\t%s\n", action->nom);
     fprintf(stream, "\tLe %c a %sh00\n", action->jour, action->heure);
 }
 
-void saveAction(paction_t paction, FILE * stream)
+void action_sauvegarder(paction_t paction, FILE *stream)
 {
     fprintf(stream, "%c%s%s", paction->jour, paction->heure, paction->nom);
 }
 
-list_t RecherhePrec (list_t pt, char jour, char* heure, char* nom){
+list_t action_rechercher_prec(list_t pt, char jour, char *heure, char *nom){
     list_t cur = pt;
     paction_t pdata;
     int test_heure;

@@ -15,19 +15,11 @@ typedef struct action
 } action_t, * paction_t;
 
 
-typedef struct GestionnaireAction
-{
+paction_t           action_creer(char, char *, char *);
 
-    list_t  (* RecherhePrec)    (list_t, char, char *, char *);
-
-} GestionnaireAction;
-
-paction_t           action_t_new(char, char *, char *);
-
-GestionnaireAction  GestionnaireAction_new();
-void                afficherActions(paction_t);
-void                afficherAction(paction_t, FILE *);
-list_t              RecherhePrec (list_t, char, char *, char *);
-void                saveAction(paction_t, FILE *);
+void                action_afficher_list(paction_t);
+void                action_afficher(void *, FILE *);
+list_t              action_rechercher_prec(list_t, char, char *, char *);
+void                action_sauvegarder(paction_t, FILE *);
 
 #endif //TP1_ACTION_H

@@ -43,7 +43,7 @@ list_t agenda_rechercher_prec(list_t pt, char *annee, char *semaine){
 
 psemaine_t agenda_semaine_creer(char *annee, char *semaine, char jour, char *heure, char *nom){
     psemaine_t pt = null;
-    paction_t data = new(action_t, jour,heure,nom);
+    paction_t data = action_creer(jour, heure, nom);
     malcx(pt, sizeof(semaine_t),"Erreur lors de l'allocation d'une semaine")
     pt->actions = init_list();
     ajouter_maillon(&pt->actions, data);
@@ -61,7 +61,7 @@ void agenda_afficher(void *data, FILE *stream)
 {
     psemaine_t pagenda = (psemaine_t)data;
     afficherSemaine(pagenda, stream);
-    afficher_list(pagenda->actions, &afficherAction, stream);
+    afficher_list(pagenda->actions, &action_afficher, stream);
 }
 
 void agenda_sauvegarder(void *data, FILE *stream)
@@ -71,7 +71,7 @@ void agenda_sauvegarder(void *data, FILE *stream)
     foreach(psemaine->actions, action)
     {
         fprintf(stream, "%s%s", psemaine->annee, psemaine->semaine);
-        saveAction(action->data, stream);
+        action_sauvegarder(action->data, stream);
         fprintf(stream, "\n");
     }
 }
