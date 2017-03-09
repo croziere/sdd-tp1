@@ -5,6 +5,8 @@
 #ifndef TP1_ACTION_H
 #define TP1_ACTION_H
 
+#include "list.h"
+
 typedef struct action
 {
     char jour;
@@ -13,14 +15,16 @@ typedef struct action
 }action_t, *paction_t;
 
 
-typedef struct gestionnaireAction {
-
+typedef struct GestionnaireAction {
+    list_t (*RecherhePrec)(list_t,char,char*,char*);
 }GestionnaireAction;
 
 paction_t action_t_new(char, char *, char *);
 
-void afficherAction(void *, FILE * stream);
-
-void saveAction(void * , FILE*);
+GestionnaireAction GestionnaireAction_new();
+void afficherActions(paction_t);
+void afficherAction(paction_t, FILE * stream);
+list_t RecherhePrec (list_t pt, char jour, char* heure, char* nom);
+void saveAction(paction_t , FILE*);
 
 #endif //TP1_ACTION_H

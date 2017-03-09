@@ -23,10 +23,28 @@ list_t Rechercher (list_t pt, char* annee, char * semaine){
     return null;
 }
 
+list_t RechercherPrec (list_t pt, char* annee, char * semaine){
+    list_t cur = pt;
+    psemaine_t pdata;
+    int test_annee;
+    int test_semaine;
+    while (cur->next != null){
+        pdata = (psemaine_t) (cur->next->data);
+        test_annee = strncmp(pdata->annee, annee,4);
+        test_semaine = strncmp(pdata->semaine, semaine,2);
+        if ((test_annee == 0) && ( test_semaine == 0)){
+            return cur;
+        }
+        cur = cur->next;
+    }
+    return null;
+}
+
 GestionnaireSemaine GestionnaireSemaine_new(){
     GestionnaireSemaine* pt = null;
     malcx(pt,sizeof(GestionnaireSemaine),"Erreur lors de l'allocation du gestionnaire de semaine")
     pt->Recherche = &Rechercher;
+    pt->RecherchePrec = &RechercherPrec;
     return *pt;
 }
 
