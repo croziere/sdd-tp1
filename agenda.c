@@ -45,8 +45,8 @@ psemaine_t agenda_semaine_creer(char *annee, char *semaine, char jour, char *heu
     psemaine_t pt = null;
     paction_t data = action_creer(jour, heure, nom);
     malcx(pt, sizeof(semaine_t),"Erreur lors de l'allocation d'une semaine")
-    pt->actions = init_list();
-    ajouter_maillon(&pt->actions, data);
+    pt->actions = list_init();
+    list_ajouter_maillon(&pt->actions, data);
     strcpy(pt->annee,annee);
     strcpy(pt->semaine,semaine);
     return pt;
@@ -61,7 +61,7 @@ void agenda_afficher(void *data, FILE *stream)
 {
     psemaine_t pagenda = (psemaine_t)data;
     afficherSemaine(pagenda, stream);
-    afficher_list(pagenda->actions, &action_afficher, stream);
+    list_afficher(pagenda->actions, &action_afficher, stream);
 }
 
 void agenda_sauvegarder(void *data, FILE *stream)
@@ -80,6 +80,6 @@ void agenda_liberer(void *data)
 {
     psemaine_t pagenda = (psemaine_t)data;
 
-    liberer_list(pagenda->actions, &free);
+    list_liberer(pagenda->actions, &free);
     free(pagenda);
 }

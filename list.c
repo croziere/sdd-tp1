@@ -9,7 +9,7 @@
 #include "list.h"
 #include "helper.h"
 
-list_t init_list()
+list_t list_init()
 {
     return null;
 }
@@ -17,7 +17,7 @@ list_t init_list()
 /// Free a generic list
 /// \param list
 /// \param free_data
-void liberer_list(list_t list, void (*free_data)(void *))
+void list_liberer(list_t list, void (*free_data)(void *))
 {
     maillon_t * cur;
     maillon_t * temp;
@@ -46,7 +46,7 @@ int estVide(list_t list)
 /// Add a node in the list
 /// \param prev
 /// \param data
-void ajouter_maillon(maillon_t **prev, void *data)
+void list_ajouter_maillon(maillon_t **prev, void *data)
 {
     maillon_t * wrap = null;
 
@@ -70,7 +70,7 @@ void ajouter_maillon(maillon_t **prev, void *data)
 /// Remove a node from the list
 /// \param prev
 /// \param free_data
-void supprimer_maillon(maillon_t *prev, void (*free_data)(void *))
+void list_supprimer_maillon(maillon_t *prev, void (*free_data)(void *))
 {
     maillon_t * temp;
 
@@ -85,7 +85,7 @@ void supprimer_maillon(maillon_t *prev, void (*free_data)(void *))
 /// \param list
 /// \param print_data
 /// \param stream
-void afficher_list(list_t list, void (*print_data)(void *, FILE *), FILE *stream)
+void list_afficher(list_t list, void (*print_data)(void *, FILE *), FILE *stream)
 {
     foreach(list, cur)
     {

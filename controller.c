@@ -11,7 +11,7 @@ int controller_main(int argc, char **argv)
 {
     int choix;
 
-    list_t agenda = init_list();
+    list_t agenda = list_init();
 
     if(argc > 1)
     {
@@ -29,11 +29,11 @@ int controller_main(int argc, char **argv)
             fscanf(stdin, "%d%*c", &choix);
             controller_do(choix, agenda);
 
-        }while (choix != 0);
+        } while (choix != 0);
 
         parser_sauvegarder("test_sauvegarde", agenda);
 
-        liberer_list(agenda, &agenda_liberer);
+        list_liberer(agenda, &agenda_liberer);
 
     }
     else
@@ -53,7 +53,7 @@ void controller_do(int choix, list_t list)
             break;
 
         case 2:
-            afficher_list(list, &agenda_afficher, stdout);
+            list_afficher(list, &agenda_afficher, stdout);
             break;
 
         case 3:
@@ -108,12 +108,12 @@ int controller_ajouter_action(list_t list){
     if (pt_semaine == null)
     {
         psemaine_t data = agenda_semaine_creer(annee, semaine, jour, heure, nom);
-        ajouter_maillon(&list, data);
+        list_ajouter_maillon(&list, data);
     }
     else
     {
         paction_t data = action_creer(jour, heure, nom);
-        ajouter_maillon(&((psemaine_t) pt_semaine->data)->actions, data);
+        list_ajouter_maillon(&((psemaine_t) pt_semaine->data)->actions, data);
     }
     return RETURN_SUCCESS;
 }
@@ -149,10 +149,10 @@ int controller_supprimer_action(list_t list){
     if (pt_semaine != null){
         list_t pt_action = action_rechercher_prec(((psemaine_t) (pt_semaine->next->data))->actions, jour, heure, nom);
         if (pt_action != null){
-            supprimer_maillon(pt_action, &free);
+            list_supprimer_maillon(pt_action, &free);
             psemaine_t data = (psemaine_t) (pt_semaine->next->data);
             if (data->actions->next == null){
-                supprimer_maillon(pt_semaine, &free);
+                list_supprimer_maillon(pt_semaine, &free);
             }
         }
     }

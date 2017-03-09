@@ -46,12 +46,12 @@ int parser_charger(char *filename, list_t *pt){
         if (pt_semaine == null)
         {
             psemaine_t data = agenda_semaine_creer(annee, semaine, jour, heure, nom);
-            ajouter_maillon(pt, data);
+            list_ajouter_maillon(pt, data);
         }
         else
         {
             paction_t data = action_creer(jour, heure, nom);
-            ajouter_maillon(&((psemaine_t) pt_semaine->data)->actions, data);
+            list_ajouter_maillon(&((psemaine_t) pt_semaine->data)->actions, data);
         }
 
     }
@@ -77,7 +77,7 @@ int parser_sauvegarder(char *filename, list_t pt){
         return  CHARGER_ERREUR_OUVERTURE;
     }
 
-    afficher_list(pt, &agenda_sauvegarder, stream);
+    list_afficher(pt, &agenda_sauvegarder, stream);
 
     if(ferror(stream)) {
         return CHARGER_ERREUR_LECTURE;
