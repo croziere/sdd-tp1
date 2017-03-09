@@ -8,14 +8,42 @@
 #include "parser.h"
 #include <string.h>
 
-Controller Controller_new()
+int controller_main(int argc, char **argv)
 {
-    Controller ctrl = null;
-    malcx(ctrl, sizeof(controller_t), "Impossible d'allouer le controlleur");
-    ctrl->Do = &controller_do;
-    ctrl->ShowMenu = &controller_show_menu;
+    int choix;
 
-    return ctrl;
+    parser * p = new(parser);
+    list_t agenda = new(list_t);
+
+    if(argc > 1)
+    {
+        if(p->Charger(argv[1], &agenda) != RETURN_SUCCESS)
+        {
+            fputs("Impossible de lire le fichier", stderr);
+            return -1;
+        }
+
+        do
+        {
+            controller_show_menu();
+            fprintf(stdout, "Action : ");
+            fflush(stdout);
+            fscanf(stdin, "%d%*c", &choix);
+            controller_do(choix, agenda);
+
+        }while (choix != 0);
+
+        p->Sauvegarder("test_sauvegarde", agenda);
+
+        liberer_list(agenda, &libererAgenda);
+
+    }
+    else
+    {
+        fputs("Vous devez spécifier un fichier en argument", stderr);
+    }
+
+    return EXIT_SUCCESS;
 }
 
 void controller_do(int choix, list_t list)
@@ -133,7 +161,4 @@ int SupprimerAction(list_t list){
             }
         }
     }
-
-
-
 }
