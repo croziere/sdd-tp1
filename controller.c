@@ -8,9 +8,18 @@
 #include "agenda.h"
 #include "parser.h"
 
+/* -------------------------------------------------------------------- */
+/* controller_main               Menu principal                         */
+/*                                                                      */
+/* En entrée: argc Nombres d'arguments du programme                     */
+/*            argv Tableau des arguments                                */
+/*                                                                      */
+/* En sortie: EXIT_SUCCESS si le programme s'est executé correctement   */
+/* -------------------------------------------------------------------- */
 int controller_main(int argc, char **argv)
 {
     int         choix;
+    int         retour = EXIT_SUCCESS;
     agenda_t    agenda = agenda_creer();
 
     if (argc > 1)
@@ -18,31 +27,43 @@ int controller_main(int argc, char **argv)
         if (parser_charger(argv[1], &agenda) != RETURN_SUCCESS)
         {
             fputs("Impossible de lire le fichier", stderr);
-            return EXIT_FAILURE;
+            retour = EXIT_FAILURE;
         }
-
-        do
+        else
         {
-            controller_show_menu();
-            fprintf(stdout, "Action : ");
-            fflush(stdout);
-            fscanf(stdin, "%d%*c", &choix);
-            controller_do(choix, agenda);
+            do
+            {
+                controller_show_menu();
+                fprintf(stdout, "Action : ");
+                fflush(stdout);
+                fscanf(stdin, "%d%*c", &choix);
+                controller_do(choix, agenda);
 
-        } while (choix != 0);
+            } while (choix != 0);
 
-        parser_sauvegarder("test_sauvegarde", agenda);
+            if (parser_sauvegarder("test_sauvegarde", agenda) != RETURN_SUCCESS)
+            {
+                fputs("Impossible de sauvegarder le fichier", stderr);
+                retour = EXIT_FAILURE;
+            }
 
-        agenda_liberer(agenda);
+            agenda_liberer(agenda);
+        }
     }
     else
     {
         fputs("Vous devez spécifier un fichier en argument", stderr);
     }
 
-    return EXIT_SUCCESS;
+    return retour;
 }
 
+/* -------------------------------------------------------------------- */
+/* controller_do               Choisit et execute l'action utilisateur  */
+/*                                                                      */
+/* En entrée: choix Choix de l'utilisateur                              */
+/*            list L'agenda                                             */
+/* -------------------------------------------------------------------- */
 void controller_do(int choix, list_t list)
 {
     switch (choix)
@@ -67,6 +88,9 @@ void controller_do(int choix, list_t list)
     }
 }
 
+/* -------------------------------------------------------------------- */
+/* controller_show_menu               Affiche le menu sur stdout        */
+/* -------------------------------------------------------------------- */
 void controller_show_menu(void)
 {
     puts("-- Menu principal --");
@@ -77,6 +101,11 @@ void controller_show_menu(void)
     puts("\t[0] Quitte le programme (et sauvegarde)");
 }
 
+/* -------------------------------------------------------------------- */
+/* controller_ajouter_action               Création d'une action        */
+/*                                                                      */
+/* En entrée: list L'agenda                                             */
+/* -------------------------------------------------------------------- */
 int controller_ajouter_action(list_t list)
 {
     char    annee[5];
@@ -86,20 +115,20 @@ int controller_ajouter_action(list_t list)
     char    nom[11];
     size_t  len_nom;
 
-    puts("Année: ");
-    scanf("%s%*c",annee);
+    puts("Année : ");
+    scanf("%s%*c", annee);
 
-    puts("Semaine: ");
-    scanf("%s%*c",semaine);
+    puts("Semaine : ");
+    scanf("%s%*c", semaine);
 
-    puts("Jour: ");
-    scanf("%c%*c",&jour);
+    puts("Jour : ");
+    scanf("%c%*c", &jour);
 
-    puts("Heure: ");
-    scanf("%s%*c",heure);
+    puts("Heure : ");
+    scanf("%s%*c", heure);
 
-    puts("Nom: ");
-    fgets(nom,11,stdin);
+    puts("Nom : ");
+    fgets(nom, 11, stdin);
 
     fpurge(stdin);
 
@@ -113,20 +142,16 @@ int controller_ajouter_action(list_t list)
         nom[strlen(nom)-1] = '\0';
     }
 
-    list_t pt_semaine = agenda_rechercher(list, annee, semaine);
-    if (pt_semaine == NULL)
-    {
-        psemaine_t data = agenda_semaine_creer(annee, semaine, jour, heure, nom);
-        list_ajouter_maillon(&list, data);
-    }
-    else
-    {
-        paction_t data = action_creer(jour, heure, nom);
-        list_ajouter_maillon(&((psemaine_t) list_data(pt_semaine))->actions, data);
-    }
+    agenda_action_ajouter(&list, annee, semaine, jour, heure, nom);
+
     return RETURN_SUCCESS;
 }
 
+/* -------------------------------------------------------------------- */
+/* controller_supprimer_action   Suppression d'une action               */
+/*                                                                      */
+/* En entrée: list L'agenda                                             */
+/* -------------------------------------------------------------------- */
 int controller_supprimer_action(list_t list){
 
     char    annee[5];
@@ -136,20 +161,20 @@ int controller_supprimer_action(list_t list){
     char    nom[11];
     size_t  len_nom;
 
-    puts("Année: ");
-    scanf("%s%*c",annee);
+    puts("Année : ");
+    scanf("%s%*c", annee);
 
-    puts("Semaine: ");
-    scanf("%s%*c",semaine);
+    puts("Semaine : ");
+    scanf("%s%*c", semaine);
 
-    puts("Jour: ");
-    scanf("%c%*c",&jour);
+    puts("Jour : ");
+    scanf("%c%*c", &jour);
 
-    puts("Heure: ");
-    scanf("%s%*c",heure);
+    puts("Heure : ");
+    scanf("%s%*c", heure);
 
-    puts("Nom: ");
-    fgets(nom,11,stdin);
+    puts("Nom : ");
+    fgets(nom, 11, stdin);
 
     fpurge(stdin);
 
