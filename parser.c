@@ -1,91 +1,85 @@
-//
-// Created by gadoy on 09/02/2017.
-//
-
+/* -------------------------------------------------------------------- */
+/* Module Parser           Lecture/Ecriture depuis un fichier           */
+/* Implémentation de la lecture et écriture                             */
+/* -------------------------------------------------------------------- */
 #include <stdio.h>
-#include <stdlib.h>
-#include <errno.h>
 #include <string.h>
-#include "list.h"
 #include "parser.h"
-#include "helper.h"
 #include "agenda.h"
 
+/* -------------------------------------------------------------------- */
+/* parser_charger              Lit filename et remplis la liste pt      */
+/*                                                                      */
+/* En entrée: filename Le path du fichier                               */
+/*            pt La liste à écrire                                      */
+/*                                                                      */
+/* En sortie: Retourne une constante RETURN_SUCCESS en cas de succès    */
+/*            CHARGER_ERREUR_OUVERTURE en cas d'ouverture impossible    */
+/*            CHARGER_ERREUR_LECTURE en cas d'erreur de lecture         */
+/* -------------------------------------------------------------------- */
 int parser_charger(char *filename, list_t *pt){
 
-    FILE * stream;
-    char buf[30];
-    char annee[5];
-    char semaine[3];
-    char jour;
-    char heure[3];
-    char nom[11];
-    int retour;
+    FILE  * stream;
 
-    if((stream = fopen(filename, "r")) == NULL)
+    char    buf[READ_LINE_MAX_SIZE];
+    char    annee[READ_ANNEE_SIZE];
+    char    semaine[READ_SEMAINE_SIZE];
+    char    jour;
+    char    heure[READ_HEURE_SIZE];
+    char    nom[READ_NOM_SIZE];
+
+    int     retour = RETURN_SUCCESS;
+
+    if ((stream = fopen(filename, "r")) == NULL)
     {
-        return CHARGER_ERREUR_OUVERTURE;
-    }
-
-    while (fgets(buf, 30, stream))
-    {
-        buf[strlen(buf) - 1] = '\0';
-
-        strncpy(annee, buf, 4);
-        strncpy(semaine, buf+4, 2);
-        strncpy(&jour, buf+6, 1);
-        strncpy(heure, buf+7, 2);
-        strcpy(nom, buf+9);
-
-        annee[4] = '\0';
-        semaine[2] = '\0';
-        heure[2] = '\0';
-
-        list_t pt_semaine = agenda_rechercher(*pt, annee, semaine);
-        if (pt_semaine == NULL)
-        {
-            psemaine_t data = agenda_semaine_creer(annee, semaine, jour, heure, nom);
-            list_ajouter_maillon(pt, data);
-        }
-        else
-        {
-            paction_t data = action_creer(jour, heure, nom);
-            list_ajouter_maillon(&((psemaine_t) list_data(pt_semaine))->actions, data);
-        }
-
-    }
-
-    if(ferror(stream))
-    {
-        retour = CHARGER_ERREUR_LECTURE;
+        retour = CHARGER_ERREUR_OUVERTURE;
     }
     else
     {
-        retour = RETURN_SUCCESS;
-    }
+        while (fgets(buf, READ_LINE_MAX_SIZE, stream))
+        {
+            if (buf[strlen(buf) - 1] == '\n') buf[strlen(buf) - 1] = '\0';
 
-    fclose(stream);
+            agenda_lecture_format(buf, annee, semaine, &jour, heure, nom);
+
+            agenda_action_ajouter(pt, annee, semaine, jour, heure, nom);
+        }
+
+        if (ferror(stream)) retour = CHARGER_ERREUR_LECTURE;
+
+        fclose(stream);
+    }
 
     return retour;
 }
 
+/* -------------------------------------------------------------------- */
+/* parser_sauvegarder              Enregistre l'agenda au format texte  */
+/*                                                                      */
+/* En entrée: filename Le path du fichier à écrire                      */
+/*            pt La liste à sauvegarder                                 */
+/*                                                                      */
+/* En sortie: Retourne une constante RETURN_SUCCESS en cas de succès    */
+/*            CHARGER_ERREUR_OUVERTURE en cas d'ouverture impossible    */
+/*            CHARGER_ERREUR_ECRITURE en cas d'erreur d'écriture        */
+/* -------------------------------------------------------------------- */
 int parser_sauvegarder(char *filename, list_t pt){
 
-    FILE * stream;
+    FILE  * stream;
+    int     retour = RETURN_SUCCESS;
 
-    if((stream = fopen(filename, "w")) == NULL)
+    if ((stream = fopen(filename, "w")) == NULL)
     {
-        return  CHARGER_ERREUR_OUVERTURE;
+        retour = CHARGER_ERREUR_OUVERTURE;
+    }
+    else
+    {
+        list_afficher(pt, &agenda_sauvegarder, stream);
+
+        if (ferror(stream)) retour =  CHARGER_ERREUR_ECRITURE;
+
+        fclose(stream);
     }
 
-    list_afficher(pt, &agenda_sauvegarder, stream);
-
-    if(ferror(stream)) {
-        return CHARGER_ERREUR_LECTURE;
-    }
-
-    fclose(stream);
-
-    return RETURN_SUCCESS;
-
+    return retour;
 }

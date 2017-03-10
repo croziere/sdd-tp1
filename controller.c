@@ -1,21 +1,21 @@
-//
-// Created by Benjamin Rozière on 09/02/2017.
-//
+/* -------------------------------------------------------------------- */
+/* Module Controller           Gestion des actions utilisateur          */
+/* Implémentation des actions                                           */
+/* -------------------------------------------------------------------- */
 
+#include <string.h>
 #include "controller.h"
 #include "agenda.h"
 #include "parser.h"
-#include <string.h>
 
 int controller_main(int argc, char **argv)
 {
-    int choix;
+    int         choix;
+    agenda_t    agenda = agenda_creer();
 
-    list_t agenda = list_init();
-
-    if(argc > 1)
+    if (argc > 1)
     {
-        if(parser_charger(argv[1], &agenda) != RETURN_SUCCESS)
+        if (parser_charger(argv[1], &agenda) != RETURN_SUCCESS)
         {
             fputs("Impossible de lire le fichier", stderr);
             return EXIT_FAILURE;
@@ -33,8 +33,7 @@ int controller_main(int argc, char **argv)
 
         parser_sauvegarder("test_sauvegarde", agenda);
 
-        list_liberer(agenda, &agenda_liberer);
-
+        agenda_liberer(agenda);
     }
     else
     {
@@ -63,6 +62,7 @@ void controller_do(int choix, list_t list)
             controller_supprimer_action(list);
 
         default:
+            clrscr;
             break;
     }
 }
@@ -79,12 +79,12 @@ void controller_show_menu(void)
 
 int controller_ajouter_action(list_t list)
 {
-    char annee[5];
-    char semaine[3];
-    char jour;
-    char heure[3];
-    char nom[11];
-    size_t len_nom;
+    char    annee[5];
+    char    semaine[3];
+    char    jour;
+    char    heure[3];
+    char    nom[11];
+    size_t  len_nom;
 
     puts("Année: ");
     scanf("%s%*c",annee);
@@ -129,38 +129,51 @@ int controller_ajouter_action(list_t list)
 
 int controller_supprimer_action(list_t list){
 
-    char annee[5];
-    char semaine[3];
-    char jour;
-    char heure[3];
-    char nom[11];
-    size_t len_nom;
+    char    annee[5];
+    char    semaine[3];
+    char    jour;
+    char    heure[3];
+    char    nom[11];
+    size_t  len_nom;
+
     puts("Année: ");
     scanf("%s%*c",annee);
+
     puts("Semaine: ");
     scanf("%s%*c",semaine);
+
     puts("Jour: ");
     scanf("%c%*c",&jour);
+
     puts("Heure: ");
     scanf("%s%*c",heure);
+
     puts("Nom: ");
     fgets(nom,11,stdin);
+
     fpurge(stdin);
+
     annee[4] = '\0';
     semaine[2] = '\0';
     heure[2] = '\0';
+
     len_nom = strlen(nom);
-    if (len_nom < 10){
+
+    if (len_nom < 10)
+    {
         nom[strlen(nom)-1] = '\0';
     }
     list_t pt_semaine = agenda_rechercher_prec(list, annee, semaine);
 
-    if (pt_semaine != NULL){
+    if (pt_semaine != NULL)
+    {
         list_t pt_action = action_rechercher_prec(((psemaine_t) list_data(list_suivant(pt_semaine)))->actions, jour, heure, nom);
-        if (pt_action != NULL){
+        if (pt_action != NULL)
+        {
             list_supprimer_maillon(pt_action, &free);
             psemaine_t data = (psemaine_t) list_data(list_suivant(pt_semaine));
-            if (list_suivant(data->actions) == NULL){
+            if (list_suivant(data->actions) == NULL)
+            {
                 list_supprimer_maillon(pt_semaine, &free);
             }
         }

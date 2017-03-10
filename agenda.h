@@ -19,10 +19,19 @@ typedef struct
     list_t  actions;
 } semaine_t, * psemaine_t;
 
+/* Encapsulation de la liste */
 typedef list_t agenda_t;
 
+agenda_t    agenda_creer();
+void        agenda_liberer(agenda_t);
+
+void        agenda_action_ajouter(list_t *, char *, char *, char, char *, char *);
+void        agenda_lecture_format(char *, char *, char *, char *, char *, char *);
+
+
+
 psemaine_t  agenda_semaine_creer(char *, char *, char, char *, char *);
-void        agenda_liberer(void *);
+void        agenda_semaine_liberer(void *);
 
 list_t      agenda_rechercher(list_t, char *, char *);
 list_t      agenda_rechercher_prec(list_t, char *, char *);

@@ -1,5 +1,6 @@
 /* -------------------------------------------------------------------- */
 /* Module List           Gestion d'une liste chainée générique          */
+/* Implémentation des primitives                                        */
 /* -------------------------------------------------------------------- */
 
 #include "list.h"
@@ -25,17 +26,16 @@ list_t list_init()
 /* -------------------------------------------------------------------- */
 void list_liberer(list_t list, void (*free_data)(void *))
 {
-    maillon_t * temp;
+    maillon_t   * temp;
 
     foreach(list, cur)
     {
         temp = cur;
-        free_data(list_data(temp));
         next(cur);
+
+        free_data(list_data(temp));
         free(temp);
     }
-
-    free(list);
 }
 
 /* -------------------------------------------------------------------- */
@@ -58,7 +58,7 @@ int list_est_vide(list_t list)
 /* -------------------------------------------------------------------- */
 void list_ajouter_maillon(maillon_t **prev, void *data)
 {
-    maillon_t * wrap = NULL;
+    maillon_t   * wrap = NULL;
 
     malcx(wrap, sizeof(maillon_t), "Impossible d'allouer le maillon")
 
@@ -86,7 +86,7 @@ void list_ajouter_maillon(maillon_t **prev, void *data)
 /* -------------------------------------------------------------------- */
 void list_supprimer_maillon(maillon_t *prev, void (*free_data)(void *))
 {
-    maillon_t * temp;
+    maillon_t   * temp;
 
     temp = list_suivant(prev);
     prev->next = list_suivant(temp);
