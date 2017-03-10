@@ -19,6 +19,8 @@ typedef struct
     list_t  actions;
 } semaine_t, * psemaine_t;
 
+typedef list_t agenda_t;
+
 psemaine_t  agenda_semaine_creer(char *, char *, char, char *, char *);
 void        agenda_liberer(void *);
 
