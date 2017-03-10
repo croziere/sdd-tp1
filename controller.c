@@ -130,7 +130,7 @@ int controller_ajouter_action(list_t list)
     puts("Nom : ");
     fgets(nom, 11, stdin);
 
-    fpurge(stdin);
+    fflush(stdin);
 
     annee[4] = '\0';
     semaine[2] = '\0';
@@ -176,7 +176,7 @@ int controller_supprimer_action(list_t list){
     puts("Nom : ");
     fgets(nom, 11, stdin);
 
-    fpurge(stdin);
+    fflush(stdin);
 
     annee[4] = '\0';
     semaine[2] = '\0';
