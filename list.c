@@ -9,47 +9,26 @@
 #include "list.h"
 #include "helper.h"
 
-GestionnaireList GestionnaireList_new(){
-    GestionnaireList* pt;
-    malcx(pt, sizeof(GestionnaireList),"Erreur allocation liste")
-    pt->AfficherList = &afficherList;
-    pt->AjouterMaillon =&ajouterMaillon;
-    pt->EstVide = &estVide;
-    pt->LibererList = &liberer_list;
-    pt->SupprimerMaillon = &supprimerMaillon;
-    return *pt;
-}
-
-list_t list_t_new()
+list_t list_init()
 {
-    return init_list();
-}
-
-list_t init_list()
-{
-    maillon_t * tete;
-    malcx(tete, sizeof(maillon_t), "Impossible d'allouer la tête")
-
-    tete->data = tete->next = NULL;
-
-    return tete;
+    return NULL;
 }
 
 /// Free a generic list
 /// \param list
 /// \param free_data
-void liberer_list(list_t list, void (*free_data)(void *))
+void list_liberer(list_t list, void (*free_data)(void *))
 {
     maillon_t * cur;
     maillon_t * temp;
 
-    cur = list->next;
+    cur = list_suivant(list);
 
     while (cur != NULL)
     {
         temp = cur;
-        free_data(temp->data);
-        cur = cur->next;
+        free_data(list_data(temp));
+        cur = list_suivant(cur);
         free(temp);
     }
 
@@ -59,37 +38,46 @@ void liberer_list(list_t list, void (*free_data)(void *))
 /// Return 0 if the list is empty
 /// \param list
 /// \return
-int estVide(list_t list)
+int list_est_vide(list_t list)
 {
-    return (list->next == NULL);
+    return (list == NULL);
 }
 
 /// Add a node in the list
 /// \param prev
 /// \param data
-void ajouterMaillon(maillon_t * prev, void * data)
+void list_ajouter_maillon(maillon_t **prev, void *data)
 {
-    maillon_t * wrap;
+    maillon_t * wrap = NULL;
 
     malcx(wrap, sizeof(maillon_t), "Impossible d'allouer le maillon")
 
     wrap->data = data;
-    wrap->next = prev->next;
 
-    prev->next = wrap;
+    if(*prev != NULL)
+    {
+        wrap->next = list_suivant(*prev);
+        (*prev)->next = wrap;
+    }
+    else
+    {
+        wrap->next = NULL;
+        *prev = wrap;
+    }
+
 }
 
 /// Remove a node from the list
 /// \param prev
 /// \param free_data
-void supprimerMaillon(maillon_t * prev, void (*free_data)(void *))
+void list_supprimer_maillon(maillon_t *prev, void (*free_data)(void *))
 {
     maillon_t * temp;
 
-    temp = prev->next;
-    prev->next = temp->next;
+    temp = list_suivant(prev);
+    prev->next = list_suivant(temp);
 
-    free_data(temp->data);
+    free_data(list_data(temp));
     free(temp);
 }
 
@@ -97,11 +85,23 @@ void supprimerMaillon(maillon_t * prev, void (*free_data)(void *))
 /// \param list
 /// \param print_data
 /// \param stream
-void afficherList(list_t list, void (*print_data)(void *, FILE *), FILE * stream)
+void list_afficher(list_t list, void (*print_data)(void *, FILE *), FILE *stream)
 {
     foreach(list, cur)
     {
-        print_data(cur->data, stream);
+        print_data(list_data(cur), stream);
+
+        next(cur);
     }
+}
+
+void  * list_data(maillon_t * pmaillon)
+{
+    return pmaillon->data;
+}
+
+maillon_t * list_suivant(maillon_t * pmaillon)
+{
+    return pmaillon->next;
 }
 

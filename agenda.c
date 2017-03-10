@@ -6,83 +6,116 @@
 #include <string.h>
 #include <errno.h>
 #include "agenda.h"
-#include "parser.h"
 #include "helper.h"
 
-list_t Rechercher (list_t pt, char* annee, char * semaine){
+/* -------------------------------------------------------------------- */
+/* agenda_rechercher           Recherche une semaine dans l'agenda      */
+/*                                                                      */
+/* En entrée: pt La liste des semaines (Agenda)                         */
+/*            annee Une chaine contenant l'année recherchée             */
+/*            semaine Une chaine contenant la semaine recherchée        */
+/*                                                                      */
+/* En sortie: Retourne l'adresse de la semaine ou NULL si non trouvé    */
+/* -------------------------------------------------------------------- */
+list_t agenda_rechercher(list_t pt, char *annee, char *semaine){
     psemaine_t pdata;
     int test_annee;
     int test_semaine;
-    foreach(pt,cur){
-        pdata = (psemaine_t)(cur->data);
+    foreach(pt, cur)
+    {
+        pdata = (psemaine_t)list_data(cur);
         test_annee = strncmp(pdata->annee, annee,4);
         test_semaine = strncmp(pdata->semaine, semaine,2);
-       if ((test_annee == 0) && ( test_semaine == 0)){
+        if ((test_annee == 0) && ( test_semaine == 0))
+        {
             return cur;
         }
+        next(cur);
     }
-    return null;
+    return NULL;
 }
 
-list_t RechercherPrec (list_t pt, char* annee, char * semaine){
+/* -------------------------------------------------------------------- */
+/* agenda_rechercher_prec           Recherche de la semaine précedente  */
+/* dans la liste                                                        */
+/*                                                                      */
+/* En entrée: pt La liste des semaines (Agenda)                         */
+/*            annee Une chaine contenant l'année recherchée             */
+/*            semaine Une chaine contenant la semaine recherchée        */
+/*                                                                      */
+/* En sortie: Retourne l'adresse de la semaine précedente               */
+/* ou NULL si non trouvé                                                */
+/* -------------------------------------------------------------------- */
+list_t agenda_rechercher_prec(list_t pt, char *annee, char *semaine){
     list_t cur = pt;
     psemaine_t pdata;
     int test_annee;
     int test_semaine;
-    while (cur->next != null){
-        pdata = (psemaine_t) (cur->next->data);
+    while (list_suivant(cur) != NULL){
+        pdata = (psemaine_t) list_data(list_suivant(cur));
         test_annee = strncmp(pdata->annee, annee,4);
         test_semaine = strncmp(pdata->semaine, semaine,2);
         if ((test_annee == 0) && ( test_semaine == 0)){
             return cur;
         }
-        cur = cur->next;
+        cur = list_suivant(cur);
     }
-    return null;
+    return NULL;
 }
 
-GestionnaireSemaine GestionnaireSemaine_new(){
-    GestionnaireSemaine* pt;
-    malcx(pt,sizeof(GestionnaireSemaine),"Erreur lors de l'allocation du gestionnaire de semaine")
-    pt->Recherche = &Rechercher;
-    pt->RecherchePrec = &RechercherPrec;
-    return *pt;
-}
-
-psemaine_t semaine_t_new(char* annee, char* semaine, char jour, char* heure, char* nom){
-    psemaine_t pt;
-    paction_t data = new(action_t, jour,heure,nom);
+/* -------------------------------------------------------------------- */
+/* agenda_semaine_creer           Créé une nouvelle semaine             */
+/*                                                                      */
+/* En entrée: annee Une chaine contenant l'année                        */
+/*                  semaine Une chaine contenant la semaine             */
+/*                  jour Un caractere contenant le jour                 */
+/*                  heure Une chaine contenance l'heure                 */
+/*                  nom Une chaine contenant le nom de l'action         */
+/*                                                                      */
+/* En sortie: Retourne l'adresse de la semaine ou NULL si non trouvé    */
+/* -------------------------------------------------------------------- */
+psemaine_t agenda_semaine_creer(char *annee, char *semaine, char jour, char *heure, char *nom){
+    psemaine_t pt = NULL;
+    paction_t data = action_creer(jour, heure, nom);
     malcx(pt, sizeof(semaine_t),"Erreur lors de l'allocation d'une semaine")
-    pt->actions = new(list_t);
-    ajouterMaillon(pt->actions,data);
+    pt->actions = list_init();
+    list_ajouter_maillon(&pt->actions, data);
     strcpy(pt->annee,annee);
     strcpy(pt->semaine,semaine);
     return pt;
 }
 
-void afficherSemaine(psemaine_t agenda, FILE * stream)
+void agenda_semaine_afficher(psemaine_t agenda, FILE *stream)
 {
     fprintf(stream, "Annee %s / Semaine %s\n", agenda->annee, agenda->semaine);
 }
 
-void afficherAgenda(psemaine_t pagenda, FILE * stream)
+void agenda_afficher(void *data, FILE *stream)
 {
-    afficherSemaine(pagenda, stream);
-    afficherList(pagenda->actions, &afficherAction, stream);
+    psemaine_t pagenda = (psemaine_t)data;
+    
+    agenda_semaine_afficher(pagenda, stream);
+    list_afficher(pagenda->actions, &action_afficher, stream);
 }
 
-void saveAgenda(psemaine_t psemaine, FILE * stream)
+void agenda_sauvegarder(void *data, FILE *stream)
 {
+    psemaine_t psemaine = (psemaine_t)data;
+
     foreach(psemaine->actions, action)
     {
         fprintf(stream, "%s%s", psemaine->annee, psemaine->semaine);
-        saveAction(action->data, stream);
+        action_sauvegarder(list_data(action), stream);
         fprintf(stream, "\n");
+
+        next(action);
     }
 }
 
-void libererAgenda(psemaine_t pagenda)
+void agenda_liberer(void *data)
 {
-    liberer_list(pagenda->actions, &free);
+    psemaine_t pagenda = (psemaine_t)data;
+
+    list_liberer(pagenda->actions, &free);
     free(pagenda);
 }
