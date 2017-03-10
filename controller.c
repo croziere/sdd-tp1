@@ -78,9 +78,11 @@ void controller_do(int choix, list_t agenda)
 
         case 3:
             controller_ajouter_action(agenda);
+            break;
 
         case 4:
             controller_supprimer_action(agenda);
+            break;
 
         default:
             clrscr;
