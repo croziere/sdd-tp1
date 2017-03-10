@@ -64,7 +64,7 @@ int controller_main(int argc, char **argv)
 /* En entrée: choix Choix de l'utilisateur                              */
 /*            list L'agenda                                             */
 /* -------------------------------------------------------------------- */
-void controller_do(int choix, list_t list)
+void controller_do(int choix, list_t agenda)
 {
     switch (choix)
     {
@@ -73,14 +73,14 @@ void controller_do(int choix, list_t list)
             break;
 
         case 2:
-            list_afficher(list, &agenda_afficher, stdout);
+            agenda_afficher_stdout(agenda);
             break;
 
         case 3:
-            controller_ajouter_action(list);
+            controller_ajouter_action(agenda);
 
         case 4:
-            controller_supprimer_action(list);
+            controller_supprimer_action(agenda);
 
         default:
             clrscr;
